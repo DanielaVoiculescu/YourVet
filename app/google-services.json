@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "711130571964",
+    "project_id": "yourvet-fdaf2",
+    "storage_bucket": "yourvet-fdaf2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711130571964:android:07ae52f36c770a66e99cb9",
+        "android_client_info": {
+          "package_name": "com.example.yourvet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711130571964-sr6v7q2kb22gg5b4r666thjf00r4nhf5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yourvet",
+            "certificate_hash": "1f676c30026d20316f0f73cbb7e0d68a94c57e6c"
+          }
+        },
+        {
+          "client_id": "711130571964-9mpfguvqk850tg8nv17eo02itnfopcum.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBByPnL_0ezVAUoh0eUFJmQlh1G4-nVpns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711130571964-9mpfguvqk850tg8nv17eo02itnfopcum.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
