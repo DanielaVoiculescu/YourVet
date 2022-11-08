@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.regex.Pattern;
+
 public class Register extends AppCompatActivity {
     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
     @Override
@@ -47,6 +49,22 @@ public class Register extends AppCompatActivity {
                 else
                     if(!passwordText.equals(conf_passwordText)){
                         Toast.makeText(Register.this, "Parolele nu coincid", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(!Pattern.matches("^[A-Z][a-z]*$",lastnameText)){
+                        Toast.makeText(Register.this, "Numele de familie trebuie sa contina doar litere", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(!Pattern.matches("^[A-Z][a-z]*$",firstnameText)){
+                        Toast.makeText(Register.this, "Prenumele trebuie sa contina doar litere", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else if(!Pattern.matches("^(\\+4|)?(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\\s|\\.|\\-)?([0-9]{3}(\\s|\\.|\\-|)){2}$",phoneText)){
+                        Toast.makeText(Register.this, "Numar de telefon invalid", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(!Pattern.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",emailText)){
+                        Toast.makeText(Register.this,"Email invalid",Toast.LENGTH_SHORT).show();
+                    }
+                    else if(!Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?])[A-Za-z\\d#$@!%&*?]{6,}$",passwordText)){
+                        Toast.makeText(Register.this, "Parola invalida", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {

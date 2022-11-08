@@ -8,12 +8,26 @@
     android:gravity="center"
     tools:context=".Login"
     android:background="@color/aero_blue">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/icon">
+
+    </ImageView>
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="YourVet"
+        android:textStyle="bold"
+        ></TextView>
     <EditText
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:inputType="textEmailAddress"
-    android:id="@+id/mail"
-    android:hint="Email"
+    android:inputType="text"
+    android:id="@+id/username"
+    android:hint="Nume de utilizator"
     android:maxLines="1"
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
@@ -54,7 +68,7 @@
             android:id="@+id/registerNowBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Creati?"
+            android:text="Creati-va"
             android:textStyle="bold"
             android:layout_marginStart="5dp"/>
 

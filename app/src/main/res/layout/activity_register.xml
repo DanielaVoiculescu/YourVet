@@ -80,6 +80,12 @@
         android:paddingStart="20dp"
         android:paddingEnd="0dp"
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:text="Parola trebuie sa fie alcatuita din minimum 6 caractere, dintre care cel putin o litera mica, o litera mare, un numar si un caracter special"></TextView>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
