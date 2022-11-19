@@ -83,15 +83,27 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
         android:textStyle="bold"
         android:text="Parola trebuie sa fie alcatuita din minimum 6 caractere, dintre care cel putin o litera mica, o litera mare, un numar si un caracter special"></TextView>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:id="@+id/confirm_password"
         android:hint="Confirma parola"
+        android:maxLines="1"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:id="@+id/doctor_id"
+        android:hint="ID DOCTOR"
         android:maxLines="1"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
