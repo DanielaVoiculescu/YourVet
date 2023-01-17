@@ -5,16 +5,18 @@ public class Request {
     private String lastname;
     private String firstname;
     private String doctorID;
-
+    private String userId;
     public Request() {
     }
 
-    public Request(String username, String lastname, String firstname, String doctorID) {
+    public Request(String username, String lastname, String firstname, String doctorID, String userId) {
         this.username = username;
         this.lastname = lastname;
         this.firstname = firstname;
         this.doctorID = doctorID;
+        this.userId=userId;
     }
+
 
     public String getUsername() {
         return username;
@@ -46,5 +48,13 @@ public class Request {
 
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

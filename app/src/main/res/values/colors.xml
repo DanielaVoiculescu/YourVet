@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="pink">#ee9ca7</color>
     <color name="aero_blue">#CBF7ED</color>
-
+    <color name="green">#00FF00</color>
+    <color name="red">#FF0000</color>
     <color name="queen_blue">#406E8E</color>
 </resources>

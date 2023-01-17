@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">YourVet</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="select_breed">Selecteaza rasa</string>
+    <string name="select_species">Selecteaza specia</string>
+    <string-array name="dogs_array">
+        <item>Bichon</item>
+        <item>Ciobanesc</item>
+        <item>Chow-chow</item>
+        <item>Akita Inu</item>
+        <item>Shih Tzu</item>
+        <item>Pomeranian</item>
+        <item>Dog German</item>
+        <item>Amstaff</item>
+        <item>Cane Corso</item>
+    </string-array>
+    <string-array name="cats_array">
+        <item>Orientala</item>
+        <item>Spynx</item>
+        <item>Siameza</item>
+        <item>Angora</item>
+        <item>Persana</item>
+        <item>Siberian</item>
+    </string-array>
+    <string-array name="species">
+        <item>Caine</item>
+        <item>Pisica</item>
+
+    </string-array>
 </resources>

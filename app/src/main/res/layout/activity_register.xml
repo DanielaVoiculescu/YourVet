@@ -4,58 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register"
+    tools:context=".authentification.Register"
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/aero_blue">
-    <EditText
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imgGallery">
+
+    </de.hdodenhof.circleimageview.CircleImageView>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/btnGallery"
+        android:text="Alege imagine"
+        android:background="@color/queen_blue">
+
+    </androidx.appcompat.widget.AppCompatButton>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:id="@+id/lastname"
-        android:hint="Nume"
-        android:maxLines="1"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="0dp"
-        />
-    <EditText
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:id="@+id/lastname"
+            android:hint="Nume"
+            android:maxLines="1"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="0dp"
+            />
+
+        <EditText
+            android:id="@+id/firstname"
+            android:layout_width="161dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="20dp"
+            android:hint="Prenume"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="20dp"
+            android:paddingEnd="0dp" />
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:id="@+id/firstname"
-        android:hint="Prenume"
-        android:maxLines="1"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="0dp"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:id="@+id/username"
-        android:hint="Nume de utilizator"
-        android:maxLines="1"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="0dp"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:id="@+id/phone"
-        android:hint="Numar telefon"
-        android:maxLines="1"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="0dp"
-        />
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:id="@+id/username"
+            android:hint="Nume de utilizator"
+            android:maxLines="1"
+            android:layout_marginStart="20dp"
+
+            android:paddingStart="20dp"
+            android:paddingEnd="0dp"
+            />
+        <EditText
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:id="@+id/phone"
+            android:hint="Numar telefon"
+            android:maxLines="1"
+
+            android:layout_marginEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="0dp"
+            />
+    </LinearLayout>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

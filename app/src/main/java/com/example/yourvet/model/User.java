@@ -10,33 +10,52 @@ public class User {
     private String email;
     private String password;
     private String phoneNr;
+    private String photoUrl;
     private String role;
-    private String doctorId;
 
-    public User(String lastname, String firstname, String username, String email, String password, String phoneNr, String doctorId, String role) {
+    public User(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.username = username;
         this.email = email;
         this.password = password;
         this.phoneNr = phoneNr;
-        this.doctorId = doctorId;
-        this.role=role;
+        this.photoUrl=photoUrl;
 
+
+    }
+
+    public User(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl, String role) {
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.phoneNr = phoneNr;
+        this.photoUrl = photoUrl;
+        this.role = role;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public User() {
     }
 
-    public User(String lastname, String firstname, String username, String email, String password, String phoneNr, String role) {
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.phoneNr = phoneNr;
-        this.role=role;
-    }
+
 
     public String getLastname() {
         return lastname;
@@ -86,20 +105,6 @@ public class User {
         this.phoneNr = phoneNr;
     }
 
-    public String getRole() {
-        return role;
-    }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
-    }
 
 }

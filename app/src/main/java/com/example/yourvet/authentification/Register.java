@@ -1,11 +1,18 @@
-package com.example.yourvet;
+package com.example.yourvet.authentification;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -14,23 +21,30 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yourvet.R;
+import com.example.yourvet.model.Patient;
 import com.example.yourvet.model.Request;
 import com.example.yourvet.model.User;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.regex.Pattern;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Register extends AppCompatActivity {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
     FirebaseAuth mAuth=FirebaseAuth.getInstance();
+    StorageReference storageReference= FirebaseStorage.getInstance().getReference("userProfile");
     EditText lastname;
     String lastnameText;
     EditText firstname;
@@ -52,6 +66,9 @@ public class Register extends AppCompatActivity {
     RadioButton radioButtonUser;
     EditText doctorID;
     String doctorIdText;
+    CircleImageView imgGallery;
+    Uri imgUri;
+    public static final int PICK_IMAGE_REQUEST=1;
     int radioId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +88,16 @@ public class Register extends AppCompatActivity {
         doctorID.setVisibility(View.INVISIBLE);
         radioButtonDoctor=findViewById(R.id.doctor);
         radioButtonUser=findViewById(R.id.simple_user);
+        imgGallery=findViewById(R.id.imgGallery);
+        Button btnGallery=findViewById(R.id.btnGallery);
+        btnGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iGallery=new Intent(Intent.ACTION_PICK);
+                iGallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                mGetContent.launch("image/*");
+            }
+        });
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,41 +131,56 @@ public class Register extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                User user= new User(lastnameText,firstnameText,usernameTex,emailText,passwordText,phoneText,"user");
-                                databaseReference.child("users").child(mAuth.getCurrentUser().getUid()).setValue(user);
+
+
+                                if(!doctorIdText.isEmpty()){
+                                    Request r=new Request(usernameTex,lastnameText,firstnameText,doctorIdText,mAuth.getCurrentUser().getUid());
+                                    databaseReference.child("requests").child(doctorIdText).setValue(r);
+                                }
+                                StorageReference fileReference= storageReference.child(mAuth.getCurrentUser().getUid()+"."+getFileExtension(imgUri));
+
+                              UploadTask uploadTask= fileReference.putFile(imgUri);
+                                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                    @Override
+                                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                        if (!task.isSuccessful()) {
+                                            throw task.getException();
+                                        }
+
+                                        // Continue with the task to get the download URL
+
+                                        return fileReference.getDownloadUrl();
+
+                                    }
+                                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Uri> task) {
+                                        if (task.isSuccessful()) {
+                                            User user;
+                                            Uri downloadUri = task.getResult();
+                                            if(!doctorIdText.isEmpty()){
+                                                user= new User(lastnameText,firstnameText,usernameTex,emailText,passwordText,phoneText,downloadUri.toString());
+
+                                            }
+                                            else{
+                                                user= new User(lastnameText,firstnameText,usernameTex,emailText,passwordText,phoneText,downloadUri.toString(),"patient");
+
+                                            }
+
+                                            databaseReference.child("users").child(mAuth.getCurrentUser().getUid()).setValue(user);
+
+                                        } else {
+
+                                        }
+                                    }
+                                });
+
                                 Toast.makeText(Register.this, "Utilizator creat cu succes!", Toast.LENGTH_SHORT).show();
+
 
                             }
                         }
                     });
-                    /*databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.hasChild(usernameTex)) {
-                                Toast.makeText(Register.this, "Numele de utilizator exista deja", Toast.LENGTH_SHORT).show();
-                            } else {
-
-                                User user= new User(lastnameText,firstnameText,usernameTex,emailText,passwordText,phoneText,"user");
-                                databaseReference.child("users").child(usernameTex).setValue(user);
-                                radioId = radioGroup.getCheckedRadioButtonId();
-                                if(!doctorIdText.isEmpty()){
-
-                                    Request request=new Request(usernameTex, lastnameText,firstnameText,doctorIdText);
-                                    databaseReference.child("doctorRequest").child(usernameTex).setValue(request);
-
-                                }
-
-
-                                Toast.makeText(Register.this, "Utilizator creat cu succes!", Toast.LENGTH_SHORT).show();
-                                //finish();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });*/
 
                 }
             }
@@ -147,7 +189,7 @@ public class Register extends AppCompatActivity {
         loginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Register.this,Login.class));
+                startActivity(new Intent(Register.this, Login.class));
                 finish();
             }
         });
@@ -171,5 +213,19 @@ public class Register extends AppCompatActivity {
         });
 
 
+    }
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    Picasso.get().load(uri).into(imgGallery);
+
+                    imgUri=uri;
+                }
+            });
+    private String getFileExtension(Uri uri){
+        ContentResolver cR=getContentResolver();
+        MimeTypeMap mime=MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 }
