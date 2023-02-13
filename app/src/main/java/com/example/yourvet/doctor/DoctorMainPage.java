@@ -15,12 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.yourvet.Profile;
 import com.example.yourvet.R;
-import com.example.yourvet.admin.AdminMainPage;
-import com.example.yourvet.admin.DoctorRequests;
 import com.example.yourvet.authentification.Login;
-import com.example.yourvet.patient.UserMainPage;
+import com.example.yourvet.model.Doctor;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -84,12 +81,19 @@ public class DoctorMainPage extends AppCompatActivity  implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
         imageView=headerView.findViewById(R.id.imgProfile);
         text=headerView.findViewById(R.id.header_text);
-        databaseReference.child("users").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Profile()).commit();
+            }
+        });
+        databaseReference.child("users").child("doctors").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Doctor d =snapshot.getValue(Doctor.class);
                 if(snapshot.exists()&& snapshot.getChildrenCount()>0){
-                    if(snapshot.hasChild("url")){
-                        String img=  snapshot.child("url").getValue().toString();
+                    if(snapshot.hasChild("photoUrl")){
+                        String img=  snapshot.child("photoUrl").getValue().toString();
                         Picasso.get().load(img).into(imageView);
 
 

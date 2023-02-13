@@ -58,32 +58,36 @@ public class Login extends AppCompatActivity {
 
                                 String userID=mAuth.getCurrentUser().getUid();
                                 FirebaseUser firebaseUser=mAuth.getCurrentUser();
-                                databaseReference.child("users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        User user;
-                                        user=snapshot.getValue(User.class);
-                                        if(user.getRole().equals("admin")){
-                                            startActivity(new Intent(Login.this, AdminMainPage.class));
-                                            finish();
-                                        }
-                                        else if (user.getRole().equals("doctor")){
-                                            startActivity(new Intent(Login.this, DoctorMainPage.class));
-                                            finish();
-                                        }
-                                        else
-                                        {
-                                            startActivity(new Intent(Login.this, UserMainPage.class));
-                                            finish();
-                                        }
 
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        databaseReference.child("roles").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if(snapshot.getValue(String.class).equals("doctor")){
+                                                    startActivity(new Intent(Login.this, DoctorMainPage.class));
+                                                    finish();
+                                                }
+                                                else
+                                                if (snapshot.getValue(String.class).equals("patient")){
+                                                    startActivity(new Intent(Login.this, UserMainPage.class));
+                                                    finish();
+                                                }
+                                                else
+                                                {
+                                                    startActivity(new Intent(Login.this, AdminMainPage.class));
+                                                    finish();
+                                                }
+                                            }
 
-                                    }
-                                });
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
+
+
+
                             }
                             else{
                                 Toast.makeText(Login.this,"Email sau parola incorecte",Toast.LENGTH_SHORT).show();

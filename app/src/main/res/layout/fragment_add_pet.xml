@@ -8,6 +8,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/photo_pet"
+            android:src="@drawable/ic_view_pets">
+
+        </de.hdodenhof.circleimageview.CircleImageView>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,6 +52,18 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/pet_breed"/>
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Selecteaza sexul"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pet_sex"/>
+        </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,7 +77,12 @@
                 android:layout_marginRight="20dp"
                 android:text="Data nasterii:"
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"></com.google.android.material.textview.MaterialTextView>
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/open_calendar"
+                android:text="Deschide calendar"></androidx.appcompat.widget.AppCompatButton>
+            <!--<com.google.android.material.textfield.TextInputLayout
 
 
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -105,8 +129,11 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>-->
         </LinearLayout>
+
+
+
         <androidx.appcompat.widget.AppCompatButton
             android:layout_marginTop="20dp"
             android:id="@+id/add_pet"

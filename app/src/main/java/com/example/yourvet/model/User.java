@@ -1,5 +1,7 @@
 package com.example.yourvet.model;
 
+import android.content.Context;
+
 import androidx.annotation.Keep;
 
 @Keep
@@ -11,9 +13,9 @@ public class User {
     private String password;
     private String phoneNr;
     private String photoUrl;
-    private String role;
+    private String id;
 
-    public User(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl) {
+    public User(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl,String id) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.username = username;
@@ -21,20 +23,9 @@ public class User {
         this.password = password;
         this.phoneNr = phoneNr;
         this.photoUrl=photoUrl;
-
-
+        this.id=id;
     }
 
-    public User(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl, String role) {
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.phoneNr = phoneNr;
-        this.photoUrl = photoUrl;
-        this.role = role;
-    }
 
     public String getPhotoUrl() {
         return photoUrl;
@@ -44,13 +35,7 @@ public class User {
         this.photoUrl = photoUrl;
     }
 
-    public String getRole() {
-        return role;
-    }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public User() {
     }
@@ -104,7 +89,9 @@ public class User {
     public void setPhoneNr(String phoneNr) {
         this.phoneNr = phoneNr;
     }
+    public void authentificate(){
 
+    }
 
 
 }

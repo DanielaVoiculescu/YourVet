@@ -15,6 +15,10 @@
         <item>Amstaff</item>
         <item>Cane Corso</item>
     </string-array>
+    <string-array name="specs">
+        <item>Oftalmologie</item>
+        <item>Radiologie</item>
+    </string-array>
     <string-array name="cats_array">
         <item>Orientala</item>
         <item>Spynx</item>
@@ -23,9 +27,10 @@
         <item>Persana</item>
         <item>Siberian</item>
     </string-array>
-    <string-array name="species">
-        <item>Caine</item>
-        <item>Pisica</item>
+    <string-array name="sex">
+        <item>Femela</item>
+        <item>Mascul</item>
 
     </string-array>
+
 </resources>

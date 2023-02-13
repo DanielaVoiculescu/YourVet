@@ -1,7 +1,9 @@
 package com.example.yourvet.model;
 
 
+import androidx.annotation.Keep;
 
+@Keep
 public class Pet {
     private String id;
     private String name;
@@ -9,14 +11,29 @@ public class Pet {
     private String breed;
     private String species;
     private Date birthdate;
+    private String photoUrl;
+    private String sex;
 
-    public Pet(String id,String name, String ownerId, String breed, String species, Date birthdate) {
-        this.id=id;
+    public Pet() {
+    }
+
+    public Pet(String id, String name, String ownerId, String breed, String species, Date birthdate, String photoUrl, String sex) {
+        this.id = id;
         this.name = name;
         this.ownerId = ownerId;
         this.breed = breed;
         this.species = species;
         this.birthdate = birthdate;
+        this.photoUrl = photoUrl;
+        this.sex = sex;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -59,12 +76,19 @@ public class Pet {
         this.birthdate = birthdate;
     }
 
-    public String getId() {
-        return id;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 }

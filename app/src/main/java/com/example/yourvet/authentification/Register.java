@@ -159,15 +159,16 @@ public class Register extends AppCompatActivity {
                                             User user;
                                             Uri downloadUri = task.getResult();
                                             if(!doctorIdText.isEmpty()){
-                                                user= new User(lastnameText,firstnameText,usernameTex,emailText,passwordText,phoneText,downloadUri.toString());
-
+                                                user= new User(lastnameText,firstnameText,usernameTex,emailText,passwordText,phoneText,downloadUri.toString(),mAuth.getCurrentUser().getUid());
+                                                databaseReference.child("users").child("patients").child(mAuth.getCurrentUser().getUid()).setValue(user);
                                             }
                                             else{
-                                                user= new User(lastnameText,firstnameText,usernameTex,emailText,passwordText,phoneText,downloadUri.toString(),"patient");
-
+                                                user= new Patient(lastnameText,firstnameText,usernameTex,emailText,passwordText,phoneText,downloadUri.toString(),mAuth.getCurrentUser().getUid());
+                                                databaseReference.child("roles").child(mAuth.getCurrentUser().getUid()).setValue("patient");
+                                                databaseReference.child("users").child("patients").child(mAuth.getCurrentUser().getUid()).setValue(user);
                                             }
 
-                                            databaseReference.child("users").child(mAuth.getCurrentUser().getUid()).setValue(user);
+
 
                                         } else {
 

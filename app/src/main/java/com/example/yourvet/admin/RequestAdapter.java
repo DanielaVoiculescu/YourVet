@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class RequestAdapter extends BaseAdapter {
     FirebaseAuth mAuth=FirebaseAuth.getInstance();
     Button btnAccept;
     Button btnReject;
-    ImageView img;
+    ImageView imageView;
     TextView name;
     TextView Id;
     private User user;
@@ -74,18 +75,47 @@ public class RequestAdapter extends BaseAdapter {
         view=inflater.inflate(R.layout.request_layout,viewGroup,false);
         name=view.findViewById(R.id.request_name);
         Id=view.findViewById(R.id.request_id);
+        imageView=view.findViewById(R.id.image_request);
         name.setText(list.get(i).getLastname()+" "+list.get(i).getFirstname());
         Id.setText(list.get(i).getDoctorID());
         btnReject=view.findViewById(R.id.reject_button);
         btnAccept=view.findViewById(R.id.accept_button);
 
+        databaseReference.child("users").child("patients").child(list.get(i).getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String img=  snapshot.child("photoUrl").getValue().toString();
+                Picasso.get().load(img).into(imageView);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                databaseReference.child("users").child(list.get(i).getUserId()).child("role").setValue("doctor");
+               /* databaseReference.child("users").child(list.get(i).getUserId()).child("role").setValue("doctor");
                 databaseReference.child("users").child(list.get(i).getUserId()).child("id").setValue(list.get(i).getDoctorID());
+                */
+                databaseReference.child("roles").child(list.get(i).getUserId()).setValue("doctor");
+                databaseReference.child("users").child("patients").child(list.get(i).getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Doctor d= snapshot.getValue(Doctor.class);
+                        databaseReference.child("users").child("doctors").child(list.get(i).getUserId()).setValue(d);
+                        databaseReference.child("users").child("patients").child(list.get(i).getUserId()).removeValue();
+                        
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 databaseReference.child("requests").child(list.get(i).getDoctorID()).removeValue();
             }
         });
@@ -93,7 +123,6 @@ public class RequestAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 databaseReference.child("requests").child(list.get(i).getDoctorID()).removeValue();
-
             }
         });
         return view;

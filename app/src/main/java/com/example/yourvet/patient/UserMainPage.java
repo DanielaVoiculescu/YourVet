@@ -15,11 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.yourvet.Profile;
 import com.example.yourvet.R;
-import com.example.yourvet.admin.DoctorRequests;
 import com.example.yourvet.authentification.Login;
-import com.example.yourvet.doctor.DoctorMainPage;
+import com.example.yourvet.doctor.Profile;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -44,10 +42,16 @@ public class UserMainPage extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_profil:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Profile()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PatientProfile()).commit();
+                navigationView.setCheckedItem(R.id.nav_profil);
                 break;
-            case R.id.nav_add_pet:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AddPet()).commit();
+            case R.id.view_pets:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewPets()).commit();
+                navigationView.setCheckedItem(R.id.view_pets);
+                break;
+            case R.id.view_doctors:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewDoctors()).commit();
+                navigationView.setCheckedItem(R.id.view_doctors);
                 break;
             case R.id.nav_logout:
                 AlertDialog.Builder builder= new AlertDialog.Builder(this);
@@ -86,12 +90,12 @@ public class UserMainPage extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         imageView=headerView.findViewById(R.id.imgProfile);
         text=headerView.findViewById(R.id.header_text);
-        databaseReference.child("users").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("users").child("patients").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()&& snapshot.getChildrenCount()>0){
-                    if(snapshot.hasChild("url")){
-                        String img=  snapshot.child("url").getValue().toString();
+                    if(snapshot.hasChild("photoUrl")){
+                        String img=  snapshot.child("photoUrl").getValue().toString();
                         Picasso.get().load(img).into(imageView);
 
 
@@ -109,7 +113,7 @@ public class UserMainPage extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Profile()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PatientProfile()).commit();
 //            navigationView.setCheckedItem(R.id.nav_profil);
         }
     }
