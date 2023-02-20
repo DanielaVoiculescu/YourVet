@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:orientation="horizontal"
-    android:id="@+id/choose_pet"
+    android:id="@+id/choose_doctor"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="10dp"
     android:elevation="15dp"
     android:background="@drawable/layout_shape"
+    android:backgroundTint="@color/design_default_color_background"
     >
 
     <de.hdodenhof.circleimageview.CircleImageView

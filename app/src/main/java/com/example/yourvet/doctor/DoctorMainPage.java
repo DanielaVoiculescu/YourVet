@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.yourvet.Message.ChatsFragment;
 import com.example.yourvet.R;
 import com.example.yourvet.authentification.Login;
 import com.example.yourvet.model.Doctor;
@@ -41,8 +42,11 @@ public class DoctorMainPage extends AppCompatActivity  implements NavigationView
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.nav_profil:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Profile()).commit();
+            case R.id.view_pets:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewAllPets()).commit();
+                break;
+            case R.id.chats:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
                 break;
             case R.id.nav_logout:
                 AlertDialog.Builder builder= new AlertDialog.Builder(this);

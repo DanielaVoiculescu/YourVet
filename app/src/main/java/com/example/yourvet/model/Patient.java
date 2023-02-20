@@ -9,7 +9,9 @@ public class Patient extends User{
         super(lastname, firstname, username, email, password, phoneNr, photoUrl,id);
         this.pets = pets;
     }
+    public Patient(){
 
+    }
     public Patient(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl,String id) {
         super(lastname, firstname, username, email, password, phoneNr, photoUrl,id);
         this.pets=null;

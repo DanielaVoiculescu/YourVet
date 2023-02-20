@@ -3,10 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EDEDED">
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/doctor_list"
-        android:divider="@null"
-        android:layout_margin="16dp"/>
+<ListView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/view_all_pets"
+    android:divider="@null"
+    android:layout_margin="16dp">
+</ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>

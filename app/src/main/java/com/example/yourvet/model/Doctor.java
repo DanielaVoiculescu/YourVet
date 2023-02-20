@@ -56,6 +56,7 @@ public class Doctor extends User{
                 ", specialization='" + specialization + '\'' +
                 ", description='" + description + '\'' +
                 ", name='" + super.getFirstname() + '\'' +
+                ", id='" + super.getId() + '\'' +
                 '}';
     }
 

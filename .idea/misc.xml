@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.155" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/drawable/background_left.xml" value="0.1" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/drawable/background_right.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/drawable/ic__add_pet.xml" value="0.1015" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/drawable/ic_admin_setting.xml" value="0.1015" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/drawable/ic_baseline_mode_edit_24.xml" value="0.1015" />
@@ -19,7 +21,7 @@
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/drawable/rounded.xml" value="0.115" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/drawable/rounded_buttons.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/drawable/rounded_image.xml" value="0.1015" />
-        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/activity_admin_main_page.xml" value="0.1" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/activity_admin_main_page.xml" value="0.264" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/activity_admin_navigation.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/activity_doctor_main_page.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/activity_login.xml" value="0.10887096774193548" />
@@ -31,21 +33,28 @@
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/add_species.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/calendar.xml" value="0.176" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/calendar_view.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/chat_item_left.xml" value="0.1" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/chat_item_right.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/doctor_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_add_doctor.xml" value="0.2" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_add_pet.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_app_admin.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_chats.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_doctor_profile.xml" value="0.264" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_private_chat.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_requests.xml" value="0.16" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_view_all_pets.xml" value="0.1046875" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_view_doctors.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_view_pets.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/list_breed.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/list_species.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/nav_header.xml" value="0.10833333333333334" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/pet_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/petfordoctor_layout.xml" value="0.1046875" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/petslist_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/request_layout.xml" value="0.34811529933481156" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/user_item.xml" value="0.128" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/menu/doctor_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/menu/drawer_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/menu/user_menu.xml" value="0.6115288220551378" />

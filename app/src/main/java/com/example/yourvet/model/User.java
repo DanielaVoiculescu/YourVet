@@ -4,8 +4,10 @@ import android.content.Context;
 
 import androidx.annotation.Keep;
 
+import java.io.Serializable;
+
 @Keep
-public class User {
+public class User implements Serializable {
    private String  lastname;
     private String firstname;
     private String username;
@@ -93,5 +95,11 @@ public class User {
 
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

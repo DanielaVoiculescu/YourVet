@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.yourvet.Message.ChatsFragment;
 import com.example.yourvet.R;
 import com.example.yourvet.authentification.Login;
 import com.example.yourvet.doctor.Profile;
@@ -52,6 +53,10 @@ public class UserMainPage extends AppCompatActivity implements NavigationView.On
             case R.id.view_doctors:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewDoctors()).commit();
                 navigationView.setCheckedItem(R.id.view_doctors);
+                break;
+            case R.id.chats:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
+                navigationView.setCheckedItem(R.id.chats);
                 break;
             case R.id.nav_logout:
                 AlertDialog.Builder builder= new AlertDialog.Builder(this);

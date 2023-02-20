@@ -3,14 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_profil"
-            android:icon="@drawable/ic_profile"
-            android:title="Editeaza profilul"/>
+        <item android:id="@+id/pets"
+            android:title="Animale">
+            <menu>
+                <item android:id="@+id/view_pets"
+                    android:icon="@drawable/ic_view_pets"
+                    android:title="Animale"/>
 
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_logout"
-            android:title="Logout"/>
+
+            </menu>
+        </item>
     </group>
+    <group android:checkableBehavior="single">
+        <item android:title="Cont">
+            <menu>
+                <item android:id="@+id/chats"
+                    android:title="Mesaje"
+                    android:icon="@drawable/ic_message">
+
+                </item>
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/ic_logout1"
+                    android:title="Logout"/>
+            </menu>
+        </item>
+    </group>
+
+
 
 </menu>

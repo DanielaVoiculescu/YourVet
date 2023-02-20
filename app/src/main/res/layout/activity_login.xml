@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     tools:context=".authentification.Login"
-    android:background="@color/aero_blue">
+    android:background="#B9FFFFFF">
 
     <ImageView
         android:layout_width="50dp"

@@ -29,6 +29,14 @@
             android:textStyle="bold"
             android:textSize="25dp"
             android:text="Nume"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name_owner"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:text="Posesor"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
