@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:backgroundTint="@color/design_default_color_background"
+    android:background="@drawable/layout_shape">
+
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"/>
+
+        android:text="Data interventiei"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/doctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/date"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:maxLines="1"
+        android:paddingTop="10dp"
+        android:text="Numele doctorului"
+        android:textColor="@color/design_default_color_primary_dark" />
+</RelativeLayout>

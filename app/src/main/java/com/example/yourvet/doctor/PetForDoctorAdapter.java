@@ -1,6 +1,9 @@
 package com.example.yourvet.doctor;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.yourvet.R;
 import com.example.yourvet.model.Patient;
 import com.example.yourvet.model.Pet;
+import com.example.yourvet.patient.PetProfileFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -82,7 +87,12 @@ public class PetForDoctorAdapter extends BaseAdapter {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SharedPreferences sharedPref = context.getSharedPreferences("pet", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("petId", list.get(i).getId());
+                editor.apply();
+                FragmentActivity fragmentActivity=(FragmentActivity) context;
+                fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PetProfileFragment()).commit();
             }
         });
         return view;

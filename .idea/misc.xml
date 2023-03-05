@@ -37,16 +37,21 @@
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/chat_item_right.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/doctor_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_add_doctor.xml" value="0.2" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_add_intervention.xml" value="0.2" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_add_pet.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_app_admin.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_chats.xml" value="0.1" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_detailed_intervention.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_doctor_profile.xml" value="0.264" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_medicalhistory.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_pet_profile.xml" value="0.264" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_private_chat.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_requests.xml" value="0.16" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_view_all_pets.xml" value="0.1046875" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_view_doctors.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/fragment_view_pets.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/intervention_item.xml" value="0.264" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/list_breed.xml" value="0.1" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/list_species.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Admin/Desktop/LICENTA/YourVet/app/src/main/res/layout/nav_header.xml" value="0.10833333333333334" />
