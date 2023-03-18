@@ -48,6 +48,9 @@ public class DoctorMainPage extends AppCompatActivity  implements NavigationView
             case R.id.chats:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
                 break;
+            case R.id.working_hours:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new WorkingHours()).commit();
+                break;
             case R.id.nav_logout:
                 AlertDialog.Builder builder= new AlertDialog.Builder(this);
                 builder.setTitle("Logout");

@@ -36,14 +36,15 @@ public class AppAdmin extends Fragment {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
-    private Button add_specialization,add_species,add_breed,add_doctor_s;
+    private Button add_specialization,add_species,add_breed,add_doctor_s,add_intervention;
 
-    private EditText specializationName,breedName;
-    private AutoCompleteTextView autoCompleteTextViewBreed;
-    private ArrayAdapter adapterItemSpecies;
+    private EditText specializationName,breedName,interventionName;
+    private AutoCompleteTextView autoCompleteTextViewBreed,autoCompleteTextViewSpecialization;
+    private ArrayAdapter adapterItemSpecies,adapterItemSpecialization;
 
     private ArrayList<String> species=new ArrayList<>();
-    private String pet_species;
+    private ArrayList<String> specialization=new ArrayList<>();
+    private String pet_species,d_specialization;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,8 +70,63 @@ public class AppAdmin extends Fragment {
                 createNewBreed();
             }
         });
+        add_intervention=view.findViewById(R.id.add_intervention);
+        add_intervention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createNewIntervention();
+            }
+        });
         return view;
     }
+
+    private void createNewIntervention() {
+        dialogBuilder=new AlertDialog.Builder(getContext());
+        final View addInterventionView=getLayoutInflater().inflate(R.layout.add_intervention,null);
+        interventionName=(EditText) addInterventionView.findViewById(R.id.new_intervention);
+        EditText interventioDuration= addInterventionView.findViewById(R.id.duration);
+        autoCompleteTextViewSpecialization=addInterventionView.findViewById(R.id.doctor_specialization);
+
+        databaseReference.child("specialization").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                specialization.clear();
+                for(DataSnapshot dataSnapshot1:snapshot.getChildren()){
+                    Specialization species1=dataSnapshot1.getValue(Specialization.class);
+
+                    specialization.add(species1.getName());
+                    adapterItemSpecialization.notifyDataSetChanged();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        adapterItemSpecialization= new ArrayAdapter(getContext(),R.layout.list_breed,specialization);
+        autoCompleteTextViewSpecialization.setAdapter(adapterItemSpecialization);
+        autoCompleteTextViewSpecialization.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                d_specialization = adapterView.getItemAtPosition(i).toString();
+            }
+        });
+        add_intervention=(Button) addInterventionView.findViewById(R.id.add_intervention);
+        add_intervention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReference.child("intervention_duration").child(d_specialization).child(interventionName.getText().toString()).setValue(interventioDuration.getText().toString());
+                Toast.makeText(getContext(), "Interventia a fost adaugata cu succes!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        dialogBuilder.setView(addInterventionView);
+        dialog=dialogBuilder.create();
+        dialog.show();
+    }
+
     public void createNewAddSpecialization(){
 
         dialogBuilder=new AlertDialog.Builder(getContext());
@@ -141,6 +197,7 @@ public class AppAdmin extends Fragment {
         databaseReference.child("species").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                species.clear();
                 for(DataSnapshot dataSnapshot1:snapshot.getChildren()){
                     Species species1=dataSnapshot1.getValue(Species.class);
 

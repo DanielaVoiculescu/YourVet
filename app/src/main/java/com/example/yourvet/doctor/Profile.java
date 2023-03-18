@@ -20,6 +20,7 @@ import com.example.yourvet.Message.PrivateChat;
 import com.example.yourvet.R;
 import com.example.yourvet.model.Doctor;
 import com.example.yourvet.model.User;
+import com.example.yourvet.patient.MakeAppointement;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -129,7 +130,13 @@ public class Profile extends Fragment {
 
 
 
+        appointment_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MakeAppointement()).commit();
+            }
+        });
         return view;
 
     }

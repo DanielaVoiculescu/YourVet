@@ -17,6 +17,11 @@
     <group android:checkableBehavior="single">
         <item android:title="Cont">
             <menu>
+                <item android:id="@+id/working_hours"
+                    android:title="Program de lucru"
+                    android:icon="@drawable/ic_time">
+
+                </item>
                 <item android:id="@+id/chats"
                     android:title="Mesaje"
                     android:icon="@drawable/ic_message">

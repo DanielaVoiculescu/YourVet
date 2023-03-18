@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/choose_doctor"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:orientation="horizontal"
-    android:id="@+id/choose_doctor"
     android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     android:layout_marginTop="10dp"
-    android:elevation="15dp"
+    android:layout_marginRight="16dp"
     android:background="@drawable/layout_shape"
     android:backgroundTint="@color/design_default_color_background"
-    >
+    android:elevation="15dp"
+    android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/doctor_photo"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginLeft="50dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="30dp">
-        <TextView
+        android:layout_marginLeft="30dp"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/name_doctor"
-            android:textSize="25dp"
-            android:text="Nume"/>
+            android:orientation="horizontal">
+            <TextView
 
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/specialization"
-                android:text="Specializarea"/>
+                android:text="Dr. "
+                android:textSize="25dp" />
             <TextView
+                android:id="@+id/name_doctor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/description"
-                android:text="Descriere"/>
+                android:text="Nume"
+                android:textSize="25dp" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/specialization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Specializarea" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descriere" />
 
     </LinearLayout>
 

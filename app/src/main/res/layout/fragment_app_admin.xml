@@ -25,6 +25,12 @@
             android:id="@+id/add_breed"
             android:text="Adauga rasa pentru o specie">
         </androidx.appcompat.widget.AppCompatButton>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_intervention"
+            android:text="Adauga un nou tip de interventie">
+        </androidx.appcompat.widget.AppCompatButton>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
