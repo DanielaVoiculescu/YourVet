@@ -4,6 +4,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="select_breed">Selecteaza rasa</string>
     <string name="select_species">Selecteaza specia</string>
+    <string name="dogs">Caini</string>
+    <string name="cats">Pisici</string>
+    <string name="others">Alte animale</string>
     <string-array name="dogs_array">
         <item>Bichon</item>
         <item>Ciobanesc</item>

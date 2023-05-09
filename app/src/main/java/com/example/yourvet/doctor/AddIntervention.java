@@ -20,7 +20,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.yourvet.R;
 import com.example.yourvet.model.Date;
+import com.example.yourvet.model.Doctor;
 import com.example.yourvet.model.Intervention;
+import com.example.yourvet.model.Notification;
 import com.example.yourvet.model.Pet;
 import com.example.yourvet.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +32,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
 
 public class AddIntervention extends Fragment {
     private String petId;
@@ -97,6 +101,35 @@ public class AddIntervention extends Fragment {
             public void onClick(View view) {
                 Intervention i=new Intervention(petId,data,simptome.getText().toString(),diagnostic.getText().toString(),interventie.getText().toString(),recomandari.getText().toString(), mAuth.getCurrentUser().getUid());
                 databaseReference.child("interventions").child(i.getId()).setValue(i);
+                databaseReference.child("pets").child(petId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Pet p=snapshot.getValue(Pet.class);
+                        databaseReference.child("users").child("doctors").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Doctor d= snapshot.getValue(Doctor.class);
+                                String title="Interventie";
+                                String message="Doctorul "+ d.getFirstname()+ " "+d.getLastname()+" a realizat o interventie, " +i.getIntervention()+ " in data de "+data+" pentru animalul dumneavoastra, "+p.getName()+ ". Pentru mai multe detalii accesati istoricul medical al animalului. Va rugam sa acordati o nota doctorului tinand cont de modul in care a fost tratat animalul";
+                                Calendar calendar1= Calendar.getInstance();
+                                String time= calendar1.getTime().toString();
+
+                                Notification notification= new Notification(title, message,p.getOwnerId(),time);
+                                databaseReference.child("notifications").child(p.getOwnerId()).child(notification.getId()).setValue(notification);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
         return view;

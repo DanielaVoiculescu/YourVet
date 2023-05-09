@@ -19,10 +19,12 @@ import com.example.yourvet.model.WorkDay;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class GridViewCustomAdapter extends BaseAdapter {
 
@@ -67,7 +69,11 @@ public class GridViewCustomAdapter extends BaseAdapter {
         v = inflater.inflate(R.layout.time_slot_item, null);
 
         Button tv = (Button) v.findViewById(R.id.button);
-        tv.setText(items.get(position));
+        try {
+            tv.setText(convertTo24HourFormat(parseTimeRange(items.get(position))[0])+"-"+convertTo24HourFormat(parseTimeRange(items.get(position))[1]));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,5 +120,17 @@ public class GridViewCustomAdapter extends BaseAdapter {
         String startString = outputFormatter.format(startTime);
         String endString = outputFormatter.format(endTime);
         return new String[] { startString, endString };
+    }
+    public String convertTo24HourFormat(String time) {
+        DateFormat inputFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+        DateFormat outputFormat = new SimpleDateFormat("HH:mm");
+
+        try {
+            Date date = inputFormat.parse(time);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

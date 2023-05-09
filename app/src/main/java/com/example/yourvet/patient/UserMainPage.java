@@ -10,15 +10,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yourvet.Message.ChatsFragment;
 import com.example.yourvet.R;
 import com.example.yourvet.authentification.Login;
 import com.example.yourvet.doctor.Profile;
+import com.example.yourvet.model.Notification;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +42,8 @@ public class UserMainPage extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     View headerView;
     CircleImageView imageView;
-
+    ImageView notificationIcon;
+    View red_dot;
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -95,6 +100,38 @@ public class UserMainPage extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         imageView=headerView.findViewById(R.id.imgProfile);
         text=headerView.findViewById(R.id.header_text);
+        notificationIcon=findViewById(R.id.notification_icon);
+        red_dot=findViewById(R.id.notification_dot);
+        red_dot.setVisibility(View.INVISIBLE);
+        databaseReference.child("notifications").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean hasUnreadNotifications = false;
+                for(DataSnapshot d:snapshot.getChildren()){
+                    Notification n=d.getValue(Notification.class);
+                    if (!n.isSeen()){
+                        hasUnreadNotifications = true;
+                        break;
+                    }
+                }
+                if (hasUnreadNotifications) {
+                    red_dot.setVisibility(View.VISIBLE);
+                } else {
+                    red_dot.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        notificationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new NotificationsFragment()).commit();
+            }
+        });
         databaseReference.child("users").child("patients").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -118,7 +155,7 @@ public class UserMainPage extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PatientProfile()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentMainPage()).commit();
 //            navigationView.setCheckedItem(R.id.nav_profil);
         }
     }
@@ -133,4 +170,5 @@ public class UserMainPage extends AppCompatActivity implements NavigationView.On
         }
 
     }
+    
 }

@@ -53,6 +53,7 @@ public class ChatsFragment extends Fragment {
                     }
                     if(m.getReciverId().equals(mAuth.getCurrentUser().getUid())){
                         usersList.add(m.getSenderId());
+                        
                     }
                 }
                 readChats();
@@ -69,30 +70,20 @@ public class ChatsFragment extends Fragment {
     }
     private  void readChats(){
         userList=new ArrayList<>();
-        databaseReference.child("users").child("doctors").addValueEventListener(new ValueEventListener() {
+        userAdapter=new UserAdapter(getContext(),userList);
+        recyclerView.setAdapter(userAdapter);
+
+        databaseReference.child("roles").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userList.clear();
-                for (DataSnapshot snapshot1: snapshot.getChildren()){
-                    User u= snapshot1.getValue(User.class);
-                    for(String id:usersList){
-                        if(u.getId().equals(id)){
-                            if(userList.size()!=0){
-                                for (User user1:userList){
-                                    if(!u.getId().equals(user1.getId())){
-                                        userList.add(u);
-                                        System.out.println(u);
-                                    }
-                                }
-                            }
-                            else{
-                                userList.add(u);
-                                System.out.println(u);
-                            }
-                        }
-                    }
+                String role=snapshot.getValue(String.class);
+                String path;
+                if (role.equals("doctor")){
+                    path="patients";
                 }
-                databaseReference.child("users").child("patients").addValueEventListener(new ValueEventListener() {
+                else
+                    path="doctors";
+                databaseReference.child("users").child(path).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot snapshot1: snapshot.getChildren()){
@@ -104,16 +95,19 @@ public class ChatsFragment extends Fragment {
                                             if(!u.getId().equals(user1.getId())){
                                                 userList.add(u);
                                                 System.out.println(u);
+                                                userAdapter.notifyDataSetChanged();
                                             }
                                         }
                                     }
                                     else{
                                         userList.add(u);
                                         System.out.println(u);
+                                        userAdapter.notifyDataSetChanged();
                                     }
                                 }
                             }
                         }
+
                     }
 
                     @Override
@@ -121,8 +115,6 @@ public class ChatsFragment extends Fragment {
 
                     }
                 });
-                userAdapter=new UserAdapter(getContext(),userList);
-                recyclerView.setAdapter(userAdapter);
             }
 
             @Override
@@ -130,5 +122,6 @@ public class ChatsFragment extends Fragment {
 
             }
         });
+
     }
 }

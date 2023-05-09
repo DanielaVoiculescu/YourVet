@@ -36,20 +36,19 @@ public class Profile extends Fragment {
     private ImageView profile_photo;
     private User user;
     private Doctor doctor;
-    private Button edit_button,appointment_button,message_button;
+    private Button appointment_button,message_button;
     private String value;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_doctor_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profiled, container, false);
 
         name = view.findViewById(R.id.profile_name);
         email = view.findViewById(R.id.profile_email);
         phone = view.findViewById(R.id.profile_phone);
         profile_photo = view.findViewById(R.id.profile_image);
         specialization=view.findViewById(R.id.doctor_specialization);
-        description=view.findViewById(R.id.doctor_desciption);
-        edit_button=view.findViewById(R.id.edit_button);
+        description=view.findViewById(R.id.doctor_description);
         appointment_button=view.findViewById(R.id.do_appointement);
         message_button=view.findViewById(R.id.message_button);
         message_button.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +88,6 @@ public class Profile extends Fragment {
                     });
                 }
                 else {
-                    edit_button.setVisibility(View.INVISIBLE);
                     SharedPreferences sharedPreferences =getContext().getSharedPreferences("myKey", MODE_PRIVATE);
                      value = sharedPreferences.getString("doctorId","");
                     databaseReference.child("users").child("doctors").child(value).addListenerForSingleValueEvent(new ValueEventListener() {

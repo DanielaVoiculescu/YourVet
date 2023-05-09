@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.yourvet.R;
@@ -36,7 +37,7 @@ public class PetForDoctorAdapter extends BaseAdapter {
     private Context context;
     private ImageView imageView;
     private TextView name, rasa,sex,owner_name;
-    private LinearLayout linearLayout;
+    private CardView linearLayout;
     public PetForDoctorAdapter(ArrayList<Pet> list, Context context) {
         this.list = list;
         this.context = context;

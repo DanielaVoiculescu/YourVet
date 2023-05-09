@@ -9,12 +9,15 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.yourvet.R;
 import com.example.yourvet.model.Pet;
 import com.example.yourvet.patient.AddPet;
 import com.example.yourvet.patient.PetAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +40,7 @@ public class ViewAllPets extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_view_all_pets,container,false);
-        petsList=(ListView) view.findViewById(R.id.view_all_pets);
+        /*petsList=(ListView) view.findViewById(R.id.view_all_pets);
 
         databaseReference.child("pets").addValueEventListener(new ValueEventListener() {
             @Override
@@ -59,7 +62,28 @@ public class ViewAllPets extends Fragment {
 
         petAdapter= new PetForDoctorAdapter(pets,getContext());
 
-        petsList.setAdapter(petAdapter);
+        petsList.setAdapter(petAdapter);*/
+        ViewPager2 viewPager = view.findViewById(R.id.view_pager);
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+
+        PetsPagerAdapter pagerAdapter = new PetsPagerAdapter(requireActivity());
+        viewPager.setAdapter(pagerAdapter);
+
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> {
+                    switch (position) {
+                        case 0:
+                            tab.setText(R.string.dogs);
+                            break;
+                        case 1:
+                            tab.setText(R.string.cats);
+                            break;
+                        case 2:
+                            tab.setText(R.string.others);
+                            break;
+                    }
+                }).attach();
+
         return view;
     }
 }

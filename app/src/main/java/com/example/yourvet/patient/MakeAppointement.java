@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,8 +25,10 @@ import com.example.yourvet.R;
 import com.example.yourvet.model.Appointment;
 import com.example.yourvet.model.Doctor;
 import com.example.yourvet.model.InterventionType;
+import com.example.yourvet.model.Notification;
 import com.example.yourvet.model.Species;
 import com.example.yourvet.model.WorkDay;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,7 +62,7 @@ public class MakeAppointement extends Fragment {
     private int day, month, year;
     private Button saveButton;
     private WorkDay workDay;
-
+    private FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -152,7 +157,7 @@ public class MakeAppointement extends Fragment {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             workDay = snapshot.getValue(WorkDay.class);
 
-                            databaseReference.child("appointements").child(value).addValueEventListener(new ValueEventListener() {
+                            databaseReference.child("appointments").child(value).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     busy_workDays.clear();
@@ -167,6 +172,10 @@ public class MakeAppointement extends Fragment {
                                     }
                                     if (busy_workDays.isEmpty()) {
                                         ArrayList<String> intervals = workDay.getSubIntervals(duration);
+                                        int numRows = (int) Math.ceil(intervals.size() / 5.0f);
+                                        int rowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
+                                        int gridViewHeight = rowHeight * numRows + (numRows - 1) * time_slots.getVerticalSpacing() + time_slots.getPaddingTop() + time_slots.getPaddingBottom();
+                                        time_slots.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, gridViewHeight));
                                         GridViewCustomAdapter adapter = new GridViewCustomAdapter(getActivity(), intervals);
                                         time_slots.setAdapter(adapter);
                                     } else {
@@ -177,6 +186,10 @@ public class MakeAppointement extends Fragment {
                                                 String time_slots = w.getStart_time() + " - " + w.getEnd_time();
                                                 nonBusyIntervals.add(time_slots);
                                             }
+                                            int numRows = (int) Math.ceil(nonBusyIntervals.size() / 5.0f);
+                                            int rowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
+                                            int gridViewHeight = rowHeight * numRows + (numRows - 1) * time_slots.getVerticalSpacing() + time_slots.getPaddingTop() + time_slots.getPaddingBottom();
+                                            time_slots.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, gridViewHeight));
                                             GridViewCustomAdapter adapter = new GridViewCustomAdapter(getActivity(), nonBusyIntervals);
                                             time_slots.setAdapter(adapter);
                                         } catch (ParseException e) {
@@ -211,8 +224,28 @@ public class MakeAppointement extends Fragment {
                 String start_time = sharedPreferences2.getString("start_time", "");
                 String end_time = sharedPreferences2.getString("end_time", "");
                 WorkDay w = new WorkDay(start_time, end_time);
-                Appointment appointment = new Appointment(value, s_intervention, formatDate(choose_date), w);
-                databaseReference.child("appointements").child(value).child(appointment.getId()).setValue(appointment);
+                Appointment appointment = new Appointment(value, s_intervention, formatDate(choose_date), w,firebaseAuth.getCurrentUser().getUid());
+                databaseReference.child("appointments").child(value).child(appointment.getId()).setValue(appointment);
+
+                databaseReference.child("users").child("doctors").child(value).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Doctor d= snapshot.getValue(Doctor.class);
+                        String title="Setare programare";
+                        String message="Ati efectuat cu succes o programare la doctorul "+ d.getFirstname()+ " "+d.getLastname()+" in data de "+formatDate(choose_date)+" pentru "+s_intervention;
+                        Calendar calendar1= Calendar.getInstance();
+                        String time= calendar1.getTime().toString();
+
+                        Notification notification= new Notification(title, message,firebaseAuth.getCurrentUser().getUid(),time);
+                        databaseReference.child("notifications").child(firebaseAuth.getCurrentUser().getUid()).child(notification.getId()).setValue(notification);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 Toast.makeText(getContext(), "Programare realizata cu succes!", Toast.LENGTH_SHORT).show();
             }
         });

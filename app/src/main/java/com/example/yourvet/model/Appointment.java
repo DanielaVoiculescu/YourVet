@@ -8,16 +8,26 @@ public class Appointment {
     private WorkDay workDay;
     private String date;
     private String id;
-    public Appointment(String doctorId, String intervention, String date,WorkDay workDay) {
+    private String owner_id;
+    public Appointment(String doctorId, String intervention, String date,WorkDay workDay,String owner_id) {
         this.doctorId = doctorId;
         this.intervention = intervention;
         this.workDay=workDay;
         this.date = date;
+        this.owner_id=owner_id;
         id= UUID.randomUUID().toString();
 
     }
 
     public Appointment() {
+    }
+
+    public String getOwner_id() {
+        return owner_id;
+    }
+
+    public void setOwner_id(String owner_id) {
+        this.owner_id = owner_id;
     }
 
     public String getDoctorId() {

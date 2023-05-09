@@ -45,6 +45,9 @@ public class DoctorMainPage extends AppCompatActivity  implements NavigationView
             case R.id.view_pets:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewAllPets()).commit();
                 break;
+            case R.id.view_appointments:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewAppointements()).commit();
+                break;
             case R.id.chats:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
                 break;
