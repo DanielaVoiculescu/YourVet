@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,7 +34,7 @@ import java.util.List;
 public class PrivateChat extends Fragment {
     private FirebaseAuth mAuth=FirebaseAuth.getInstance();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
-
+    private Button back_button;
     private ImageView btn_send;
     private EditText message_text;
     private MessageAdapter messageAdapter;
@@ -45,6 +46,14 @@ public class PrivateChat extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_private_chat, container, false);
         btn_send=view.findViewById(R.id.btn_send_message);
+        back_button= view.findViewById(R.id.back_button);
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
+
+            }
+        });
         message_text=view.findViewById(R.id.message_text);
         recyclerView=view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -71,10 +80,6 @@ public class PrivateChat extends Fragment {
         hashMap.put("reciverId",reciverId);
         hashMap.put("text",message);
         databaseReference.child("chats").push().setValue(hashMap);
-        /*Message message1=new Message(senderId,reciverId,message);
-        databaseReference.child("chats").child(message1.getId()).setValue(message1);*/
-
-
     }
     private void readMessages(String myid, String userId){
         messageList=new ArrayList<>();

@@ -1,25 +1,19 @@
 package com.example.yourvet.doctor;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.yourvet.Message.PrivateChat;
-import com.example.yourvet.Message.UserAdapter;
 import com.example.yourvet.R;
 import com.example.yourvet.model.Doctor;
 import com.example.yourvet.model.Intervention;
-import com.example.yourvet.model.Patient;
 import com.example.yourvet.model.Pet;
 import com.example.yourvet.model.User;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InterventionAdapter extends RecyclerView.Adapter<InterventionAdapter.ViewHolder> {
@@ -79,6 +74,9 @@ public class InterventionAdapter extends RecyclerView.Adapter<InterventionAdapte
 
     private void openDetalidedIntervention(String id) {
         TextView pet_name,owner_name,doctor,data, simptome,diagnostic, interventie, recomandari;
+        RecyclerView recyclerView;
+        ArrayList<String> uri=new ArrayList<>();
+        PhotoRecyclerAdapterUrl photoRecyclerAdapter;
         dialogBuilder = new AlertDialog.Builder(context);
         final View detailedintrevention = LayoutInflater.from(context).inflate(R.layout.fragment_detailed_intervention, null);
         pet_name=detailedintrevention.findViewById(R.id.pet_name);
@@ -89,6 +87,10 @@ public class InterventionAdapter extends RecyclerView.Adapter<InterventionAdapte
         diagnostic=detailedintrevention.findViewById(R.id.diagnostic);
         interventie=detailedintrevention.findViewById(R.id.interventie);
         recomandari=detailedintrevention.findViewById(R.id.prescriptii);
+        recyclerView=detailedintrevention.findViewById(R.id.poze);
+        photoRecyclerAdapter=new PhotoRecyclerAdapterUrl(uri);
+        recyclerView.setLayoutManager(new GridLayoutManager(context,4));
+        recyclerView.setAdapter(photoRecyclerAdapter);
         databaseReference.child("interventions").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -98,6 +100,23 @@ public class InterventionAdapter extends RecyclerView.Adapter<InterventionAdapte
                 diagnostic.setText(in.getDiagnostic());
                 interventie.setText(in.getIntervention());
                 recomandari.setText(in.getPrescription());
+                databaseReference.child("interventions").child(id).child("photos").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot d: snapshot.getChildren()){
+                            String url= d.getValue(String.class);
+                            uri.add(url);
+                            photoRecyclerAdapter.notifyDataSetChanged();
+                            //Log.d("url",url);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 databaseReference.child("pets").child(in.getPetId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -106,7 +125,7 @@ public class InterventionAdapter extends RecyclerView.Adapter<InterventionAdapte
                         databaseReference.child("users").child("patients").child(p.getOwnerId()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                Patient patient=snapshot.getValue(Patient.class);
+                                User patient=snapshot.getValue(User.class);
                                 owner_name.setText(patient.getFirstname()+" "+patient.getLastname());
                             }
 

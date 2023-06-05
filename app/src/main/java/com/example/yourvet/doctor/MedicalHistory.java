@@ -3,10 +3,12 @@ package com.example.yourvet.doctor;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourvet.R;
 import com.example.yourvet.model.Intervention;
+import com.example.yourvet.patient.AddPet;
+import com.example.yourvet.patient.PetProfileFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,14 +34,33 @@ public class MedicalHistory extends Fragment {
     private List<Intervention> interventionList;
     private InterventionAdapter interventionAdapter;
     private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
+    private Button back_button;
     private String petId;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_medicalhistory,container,false);
         recyclerView=view.findViewById(R.id.recycler_view);
+        back_button= view.findViewById(R.id.back_button);
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PetProfileFragment()).commit();
+
+            }
+        });
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.top = 8;
+                outRect.bottom = 8;
+            }
+        };
+
+        recyclerView.addItemDecoration(itemDecoration);
         interventionList=new ArrayList<>();
         SharedPreferences sharedPreferences =getContext().getSharedPreferences("pet", MODE_PRIVATE);
         petId = sharedPreferences.getString("petId","");

@@ -60,7 +60,6 @@ public class ChatsFragment extends Fragment {
 
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -72,13 +71,11 @@ public class ChatsFragment extends Fragment {
         userList=new ArrayList<>();
         userAdapter=new UserAdapter(getContext(),userList);
         recyclerView.setAdapter(userAdapter);
-
         databaseReference.child("roles").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String role=snapshot.getValue(String.class);
                 String path;
-                if (role.equals("doctor")){
+                if (snapshot.getValue(String.class).equals("doctor")){
                     path="patients";
                 }
                 else
@@ -94,34 +91,15 @@ public class ChatsFragment extends Fragment {
                                         for (User user1:userList){
                                             if(!u.getId().equals(user1.getId())){
                                                 userList.add(u);
-                                                System.out.println(u);
                                                 userAdapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                    }
+                                            } } }
                                     else{
                                         userList.add(u);
-                                        System.out.println(u);
                                         userAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
+                                    } } } } }
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-
+                    public void onCancelled(@NonNull DatabaseError error) { }}); }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+            public void onCancelled(@NonNull DatabaseError error) { }});
     }
 }

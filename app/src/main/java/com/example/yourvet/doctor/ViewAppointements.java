@@ -1,11 +1,17 @@
 package com.example.yourvet.doctor;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CalendarView;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,10 +38,12 @@ import java.util.List;
 
 public class ViewAppointements extends Fragment {
     private CalendarView calendarView;
-    private GridView time_slots;
-    private ArrayList<String> intervals = new ArrayList<>();
+    private AppointmentAdapter appointmentAdapter;
+    private ListView appointmentsList;
+    private ArrayList<Appointment> appointments=new ArrayList<>();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
     private FirebaseAuth mAuth=FirebaseAuth.getInstance();
+    int day,month,year;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -46,7 +54,7 @@ public class ViewAppointements extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_appointements, container, false);
         calendarView = view.findViewById(R.id.date);
-        time_slots = (GridView) view.findViewById(R.id.grid_view);
+        appointmentsList=view.findViewById(R.id.appointments_list);
         Calendar calendar = Calendar.getInstance();
         long currentDate = calendar.getTimeInMillis();
         calendarView.setMinDate(currentDate);
@@ -54,7 +62,7 @@ public class ViewAppointements extends Fragment {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                int day,month,year;
+
                 day = i2;
                 month = i1;
                 year = i;
@@ -62,20 +70,24 @@ public class ViewAppointements extends Fragment {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
                 Date choose_date = calendar.getTime();
+
                 databaseReference.child("appointments").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        intervals.clear();
+
+                        appointments.clear();
                         for(DataSnapshot d:snapshot.getChildren()){
                             Appointment a=d.getValue(Appointment.class);
                             if (a.getDate().equals(formatDate(choose_date))){
-                                intervals.add(a.getWorkDay().getStart_time()+"-"+a.getWorkDay().getEnd_time());
+
+                                appointments.add(a);
+
                                System.out.println(choose_date);
                             }
+
                             System.out.println(a);
                         }
-                        GridViewAppointmentAdapter adapter = new GridViewAppointmentAdapter(getActivity(), intervals);
-                        time_slots.setAdapter(adapter);
+                        appointmentAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -83,8 +95,12 @@ public class ViewAppointements extends Fragment {
 
                     }
                 });
+
             }
         });
+
+        appointmentAdapter=new AppointmentAdapter(getContext(),appointments);
+        appointmentsList.setAdapter(appointmentAdapter);
 
         return view;
     }
@@ -92,5 +108,6 @@ public class ViewAppointements extends Fragment {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(date);
     }
+
 
 }

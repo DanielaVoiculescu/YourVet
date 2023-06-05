@@ -1,120 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:id="@+id/photo_pet"
-            android:src="@drawable/ic_view_pets">
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        </ImageView>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="Nume"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <AutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/pet_name"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="Proprietar"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <AutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/owner_name"/>
-        </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/photo_pet"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_view_pets">
+
+            </ImageView>
+
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="200dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:hint="Data"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                android:layout_marginTop="15dp"
+                android:hint="Nume">
+
                 <AutoCompleteTextView
-                    android:layout_width="200dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/date"/>
+                    android:id="@+id/pet_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
             </com.google.android.material.textfield.TextInputLayout>
-            <androidx.appcompat.widget.AppCompatButton
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="15dp"
+                android:hint="Proprietar">
+
+                <AutoCompleteTextView
+                    android:id="@+id/owner_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="15dp"
+                    android:hint="Data">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/date"
+                        android:inputType="none"
+                        android:layout_width="200dp"
+                        android:layout_height="50dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/open_calendar"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content"
+                    android:text="Deschide calendar" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="16dp"
+                android:hint="Simptome">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/simptome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="3"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="15dp"
+                android:hint="Diagnostic">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/diagnostic"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="15dp"
+                android:hint="Interventie">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/interventie"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="Prescriptii/Recomandari">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/prescriptii"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="5"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/open_calendar"
-                android:text="Deschide calendar"/>
+                android:id="@+id/open_camera"
+                android:layout_marginTop="15dp"
+                android:text="Alege poze">
+
+            </Button>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/poze"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/add_intervention"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="Adauga"></Button>
         </LinearLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="Simptome"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/simptome"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="Diagnostic"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/diagnostic"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="Interventie"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/interventie"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="Prescriptii/Recomandari"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/prescriptii"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_marginTop="20dp"
-            android:id="@+id/add_intervention"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Adauga">
-        </androidx.appcompat.widget.AppCompatButton>
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

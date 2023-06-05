@@ -7,6 +7,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/ic_back"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/working_hours_monday"
             android:layout_width="match_parent"
@@ -36,7 +45,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Start Time"
+                        android:text="Incepeti"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -72,7 +81,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="End Time"
+                        android:text="Terminati"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -130,7 +139,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Start Time"
+                        android:text="Incepeti"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -166,7 +175,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="End Time"
+                        android:text="Terminati"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -225,7 +234,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Start Time"
+                        android:text="Incepeti"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -261,7 +270,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="End Time"
+                        android:text="Terminati"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -320,7 +329,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Start Time"
+                        android:text="Incepeti"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -356,7 +365,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="End Time"
+                        android:text="Terminati"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -415,7 +424,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Start Time"
+                        android:text="Incepeti"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -451,7 +460,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="End Time"
+                        android:text="Terminati"
                         android:textSize="16sp"/>
 
                     <com.google.android.material.textfield.TextInputLayout

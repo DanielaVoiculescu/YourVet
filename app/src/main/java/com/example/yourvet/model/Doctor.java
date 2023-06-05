@@ -4,21 +4,20 @@ public class Doctor extends User{
     private String DoctorID;
     private String specialization;
     private String description;
-
-    public Doctor(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl, String id,String DoctorID) {
-        super(lastname, firstname, username, email, password, phoneNr, photoUrl,id);
+    public Doctor(String lastname, String firstname,String email, String password, String phoneNr, String photoUrl, String id,String DoctorID) {
+        super(lastname, firstname, email, password, phoneNr, photoUrl,id);
         this.DoctorID= DoctorID;
     }
 
-    public Doctor(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl, String id, String doctorID, String specialization, String description) {
-        super(lastname, firstname, username, email, password, phoneNr, photoUrl, id);
+    public Doctor(String lastname, String firstname,  String email, String password, String phoneNr, String photoUrl, String id, String doctorID, String specialization, String description) {
+        super(lastname, firstname,  email, password, phoneNr, photoUrl, id);
         DoctorID = doctorID;
         this.specialization = specialization;
         this.description = description;
     }
 
-    public Doctor(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl, String id, String specialization, String description) {
-        super(lastname, firstname, username, email, password, phoneNr, photoUrl, id);
+    public Doctor(String lastname, String firstname, String email, String password, String phoneNr, String photoUrl, String id, String specialization, String description) {
+        super(lastname, firstname, email, password, phoneNr, photoUrl, id);
         this.specialization = specialization;
         this.description = description;
     }

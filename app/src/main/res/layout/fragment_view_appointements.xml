@@ -23,18 +23,15 @@
         </CalendarView>
 
 
-        <GridView
-            android:layout_marginTop="10dp"
-            android:id="@+id/grid_view"
-            android:layout_width="350dp"
-            android:layout_height="100dp"
-            android:columnWidth="20dip"
-            android:gravity="center"
-            android:horizontalSpacing="2dp"
-            android:verticalSpacing="2dp"
-            android:numColumns="5"
-            android:stretchMode="columnWidth" >
-        </GridView>
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/appointments_list"
+            android:layout_margin="8dp"
+            android:divider="@null"
+            android:dividerHeight="8dp">
+
+        </ListView>
 
     </LinearLayout>
 

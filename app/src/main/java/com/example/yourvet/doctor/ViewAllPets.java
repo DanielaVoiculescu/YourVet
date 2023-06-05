@@ -40,29 +40,6 @@ public class ViewAllPets extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_view_all_pets,container,false);
-        /*petsList=(ListView) view.findViewById(R.id.view_all_pets);
-
-        databaseReference.child("pets").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot1:snapshot.getChildren()){
-                    Pet pet=dataSnapshot1.getValue(Pet.class);
-                    System.out.println(pet.getName());
-                    pets.add(pet);
-                    petAdapter.notifyDataSetChanged();
-                    System.out.println(pets);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        petAdapter= new PetForDoctorAdapter(pets,getContext());
-
-        petsList.setAdapter(petAdapter);*/
         ViewPager2 viewPager = view.findViewById(R.id.view_pager);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
 

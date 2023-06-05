@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,10 @@ import androidx.fragment.app.Fragment;
 import com.example.yourvet.Message.PrivateChat;
 import com.example.yourvet.R;
 import com.example.yourvet.model.Doctor;
+import com.example.yourvet.model.Intervention;
 import com.example.yourvet.model.User;
 import com.example.yourvet.patient.MakeAppointement;
+import com.example.yourvet.patient.ViewDoctors;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,12 +39,24 @@ public class Profile extends Fragment {
     private ImageView profile_photo;
     private User user;
     private Doctor doctor;
-    private Button appointment_button,message_button;
+    private Button appointment_button,message_button,work_time;
     private String value;
+    private Button back_button;
+    private TextView grade;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profiled, container, false);
+        back_button= view.findViewById(R.id.back_button);
+        work_time=view.findViewById(R.id.work_time);
+
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewDoctors()).commit();
+
+            }
+        });
 
         name = view.findViewById(R.id.profile_name);
         email = view.findViewById(R.id.profile_email);
@@ -51,6 +66,7 @@ public class Profile extends Fragment {
         description=view.findViewById(R.id.doctor_description);
         appointment_button=view.findViewById(R.id.do_appointement);
         message_button=view.findViewById(R.id.message_button);
+        grade=view.findViewById(R.id.grade);
         message_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,6 +81,8 @@ public class Profile extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.getValue(String.class).equals("doctor")){
+                    back_button.setVisibility(View.INVISIBLE);
+                    grade.setVisibility(View.GONE);
                     message_button.setVisibility(View.INVISIBLE);
                     appointment_button.setVisibility(View.INVISIBLE);
                     databaseReference.child("users").child("doctors").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -88,8 +106,32 @@ public class Profile extends Fragment {
                     });
                 }
                 else {
+                    work_time.setVisibility(View.INVISIBLE);
                     SharedPreferences sharedPreferences =getContext().getSharedPreferences("myKey", MODE_PRIVATE);
                      value = sharedPreferences.getString("doctorId","");
+                    databaseReference.child("interventions").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            float doctorRate=0;
+                            int number=0;
+                            for( DataSnapshot d: snapshot.getChildren()){
+                                Intervention inte=d.getValue(Intervention.class);
+                                if (inte.getDoctorId().equals(value)){
+                                    if (inte.getRate()!=0){
+                                        doctorRate+=inte.getRate();
+                                        number++;
+                                    }
+                                }
+
+                            }
+                            grade.setText("Nota:\n"+doctorRate/number+"/5");
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                     databaseReference.child("users").child("doctors").child(value).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,14 +151,6 @@ public class Profile extends Fragment {
 
                         }
                     });
-                    /*name.setText(doctor.getFirstname() + " " + doctor.getLastname());
-                    email.setText(doctor.getEmail());
-                    phone.setText(doctor.getPhoneNr());
-                    specialization.setText(doctor.getSpecialization());
-                    description.setText(doctor.getDescription());
-                    String img = doctor.getPhotoUrl();
-                    Picasso.get().load(img).into(profile_photo);*/
-//                    System.out.println(doctor.getEmail());
                 }
             }
 
@@ -126,7 +160,13 @@ public class Profile extends Fragment {
             }
         });
 
+        work_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new WorkingHours()).commit();
 
+            }
+        });
 
         appointment_button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,91 +1,77 @@
 package com.example.yourvet.admin;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourvet.R;
 import com.example.yourvet.model.Doctor;
 import com.example.yourvet.model.Request;
-import com.example.yourvet.model.User;
+import com.example.yourvet.model.Specialization;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class RequestAdapter extends BaseAdapter {
-    DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
-    FirebaseAuth mAuth=FirebaseAuth.getInstance();
-    Button btnAccept;
-    Button btnReject;
-    ImageView imageView;
-    TextView name;
-    TextView Id;
-    private User user;
-    private Doctor doctor;
-    private int layoutResourceId;
-    private ArrayList<Request> list = new ArrayList<Request>();
+public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder> {
     private Context context;
-
-    public RequestAdapter(ArrayList<Request> list, Context context) {
-        super();
-        this.list = list;
+    private List<Request> requests;
+    private String specializationName;
+    private ArrayAdapter adapterItem;
+    private StorageReference storage=FirebaseStorage.getInstance().getReference("userProfile");;
+    private ArrayList<String> specializations=new ArrayList<>();
+    FirebaseAuth mAuth=FirebaseAuth.getInstance();
+    private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
+    String imagine;
+    public RequestAdapter(List<Request> requests,Context context) {
         this.context = context;
+        this.requests = requests;
     }
 
-    public RequestAdapter() {
+    @NonNull
+    @Override
+    public RequestAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(context).inflate(R.layout.request_layout,parent,false);
+
+        return new RequestAdapter.ViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return list.size();
-    }
+    public void onBindViewHolder(@NonNull RequestAdapter.ViewHolder holder, int position) {
+        Request request = requests.get(position);
+        int i= position;
 
-    @Override
-    public Object getItem(int i) {
-        return i;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        LayoutInflater inflater=(LayoutInflater)  context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view=inflater.inflate(R.layout.request_layout,viewGroup,false);
-        name=view.findViewById(R.id.request_name);
-        Id=view.findViewById(R.id.request_id);
-        imageView=view.findViewById(R.id.image_request);
-        name.setText(list.get(i).getLastname()+" "+list.get(i).getFirstname());
-        Id.setText(list.get(i).getDoctorID());
-        btnReject=view.findViewById(R.id.reject_button);
-        btnAccept=view.findViewById(R.id.accept_button);
-
-        databaseReference.child("users").child("patients").child(list.get(i).getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        holder.name.setText(requests.get(position).getLastname()+" "+requests.get(position).getFirstname());
+        holder.Id.setText(requests.get(position).getDoctorID());
+        databaseReference.child("specialization").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String img=  snapshot.child("photoUrl").getValue().toString();
-                Picasso.get().load(img).into(imageView);
+                specializations.clear();
+                for(DataSnapshot dataSnapshot1:snapshot.getChildren()){
+                    Specialization specialization=dataSnapshot1.getValue(Specialization.class);
+
+                    specializations.add(specialization.getName());
+                    adapterItem.notifyDataSetChanged();
+
+                }
             }
 
             @Override
@@ -93,21 +79,47 @@ public class RequestAdapter extends BaseAdapter {
 
             }
         });
-        btnAccept.setOnClickListener(new View.OnClickListener() {
+
+        String doctor_id=requests.get(i).getDoctorID();
+        adapterItem= new ArrayAdapter(context,R.layout.list_breed,specializations);
+        holder.autoCompleteTextView.setAdapter(adapterItem);
+        holder.autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                specializationName = adapterView.getItemAtPosition(i).toString();
+            }
+        });
+        databaseReference.child("users").child("patients").child(request.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                imagine=  snapshot.child("photoUrl").getValue().toString();
+                Picasso.get()
+                        .load(imagine)
+                        .into(holder.imageView);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        holder.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-               /* databaseReference.child("users").child(list.get(i).getUserId()).child("role").setValue("doctor");
-                databaseReference.child("users").child(list.get(i).getUserId()).child("id").setValue(list.get(i).getDoctorID());
-                */
-                databaseReference.child("roles").child(list.get(i).getUserId()).setValue("doctor");
-                databaseReference.child("users").child("patients").child(list.get(i).getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                databaseReference.child("roles").child(request.getUserId()).setValue("doctor");
+                databaseReference.child("users").child("patients").child(request.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Doctor d= snapshot.getValue(Doctor.class);
-                        databaseReference.child("users").child("doctors").child(list.get(i).getUserId()).setValue(d);
-                        databaseReference.child("users").child("patients").child(list.get(i).getUserId()).removeValue();
-                        
+                        d.setSpecialization(specializationName);
+
+                        databaseReference.child("requests").child(request.getUserId()).removeValue();
+                        databaseReference.child("users").child("doctors").child(request.getUserId()).setValue(d);
+                        databaseReference.child("users").child("patients").child(request.getUserId()).removeValue();
+                        requests.remove(i);
+                        notifyItemRemoved(i);
 
                     }
 
@@ -116,15 +128,43 @@ public class RequestAdapter extends BaseAdapter {
 
                     }
                 });
-                databaseReference.child("requests").child(list.get(i).getDoctorID()).removeValue();
+
             }
         });
-        btnReject.setOnClickListener(new View.OnClickListener() {
+        holder.btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.child("requests").child(list.get(i).getDoctorID()).removeValue();
+                databaseReference.child("requests").child(doctor_id).removeValue();
+                requests.remove(i);
+                notifyItemRemoved(i);
             }
         });
-        return view;
+
+
     }
+
+    @Override
+    public int getItemCount() {
+        return requests.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        Button btnAccept;
+        Button btnReject;
+
+        ImageView imageView;
+        TextView name;
+        TextView Id;
+        AutoCompleteTextView autoCompleteTextView;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            name=itemView.findViewById(R.id.request_name);
+            Id=itemView.findViewById(R.id.request_id);
+            imageView=itemView.findViewById(R.id.image_request);
+            btnReject=itemView.findViewById(R.id.reject_button);
+            btnAccept=itemView.findViewById(R.id.accept_button);
+            autoCompleteTextView=itemView.findViewById(R.id.set_specialization);
+        }
+    }
+
 }

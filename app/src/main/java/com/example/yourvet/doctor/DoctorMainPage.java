@@ -19,6 +19,7 @@ import com.example.yourvet.Message.ChatsFragment;
 import com.example.yourvet.R;
 import com.example.yourvet.authentification.Login;
 import com.example.yourvet.model.Doctor;
+import com.example.yourvet.patient.FragmentMainPage;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +43,9 @@ public class DoctorMainPage extends AppCompatActivity  implements NavigationView
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case R.id.nav_profil:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Profile()).commit();
+                break;
             case R.id.view_pets:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewAllPets()).commit();
                 break;
@@ -51,9 +55,7 @@ public class DoctorMainPage extends AppCompatActivity  implements NavigationView
             case R.id.chats:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
                 break;
-            case R.id.working_hours:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new WorkingHours()).commit();
-                break;
+
             case R.id.nav_logout:
                 AlertDialog.Builder builder= new AlertDialog.Builder(this);
                 builder.setTitle("Logout");
@@ -121,7 +123,7 @@ public class DoctorMainPage extends AppCompatActivity  implements NavigationView
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Profile()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentMainPage()).commit();
         }
     }
     @Override

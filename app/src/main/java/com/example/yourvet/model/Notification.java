@@ -8,6 +8,7 @@ public class Notification {
     private String message;
     private String userId;
     private String  time;
+    private String interventionId;
     private boolean seen;
     public Notification(String title, String message, String userId, String  time) {
         this.id= UUID.randomUUID().toString();
@@ -16,6 +17,17 @@ public class Notification {
         this.userId = userId;
         this.time = time;
         this.seen =false;
+    }
+
+    public Notification(String title, String message, String userId, String time, String interventionId) {
+        this.id=UUID.randomUUID().toString();
+        this.id = id;
+        this.title = title;
+        this.message = message;
+        this.userId = userId;
+        this.time = time;
+        this.interventionId = interventionId;
+        this.seen = false;
     }
 
     public Notification() {
@@ -67,5 +79,13 @@ public class Notification {
 
     public void setSeen(boolean seen) {
         this.seen = seen;
+    }
+
+    public String getInterventionId() {
+        return interventionId;
+    }
+
+    public void setInterventionId(String interventionId) {
+        this.interventionId = interventionId;
     }
 }

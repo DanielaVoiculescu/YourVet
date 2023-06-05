@@ -5,14 +5,14 @@ import java.util.UUID;
 public class Appointment {
     private String doctorId;
     private String intervention;
-    private WorkDay workDay;
+    private TimeInterval timeInterval;
     private String date;
     private String id;
     private String owner_id;
-    public Appointment(String doctorId, String intervention, String date,WorkDay workDay,String owner_id) {
+    public Appointment(String doctorId, String intervention, String date, TimeInterval timeInterval, String owner_id) {
         this.doctorId = doctorId;
         this.intervention = intervention;
-        this.workDay=workDay;
+        this.timeInterval = timeInterval;
         this.date = date;
         this.owner_id=owner_id;
         id= UUID.randomUUID().toString();
@@ -54,12 +54,12 @@ public class Appointment {
         this.date = date;
     }
 
-    public WorkDay getWorkDay() {
-        return workDay;
+    public TimeInterval getWorkDay() {
+        return timeInterval;
     }
 
-    public void setWorkDay(WorkDay workDay) {
-        this.workDay = workDay;
+    public void setWorkDay(TimeInterval timeInterval) {
+        this.timeInterval = timeInterval;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Appointment {
         return "Appointment{" +
                 "doctorId='" + doctorId + '\'' +
                 ", intervention='" + intervention + '\'' +
-                ", workDay=" + workDay +
+                ", timeInterval=" + timeInterval +
                 ", date='" + date + '\'' +
                 '}';
     }

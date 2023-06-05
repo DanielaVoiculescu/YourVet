@@ -11,6 +11,7 @@ public class Intervention {
     private String intervention;
     private String prescription;
     private String doctorId;
+    private float rate;
     public Intervention() {
     }
 
@@ -23,6 +24,26 @@ public class Intervention {
         this.prescription = prescription;
         this.id= UUID.randomUUID().toString();
         this.doctorId=doctorId;
+    }
+
+    public Intervention(String id, String petId, Date date, String symptom, String diagnostic, String intervention, String prescription, String doctorId, float rate) {
+        this.id = id;
+        this.petId = petId;
+        this.date = date;
+        this.symptom = symptom;
+        this.diagnostic = diagnostic;
+        this.intervention = intervention;
+        this.prescription = prescription;
+        this.doctorId = doctorId;
+        this.rate = rate;
+    }
+
+    public float getRate() {
+        return rate;
+    }
+
+    public void setRate(float rate) {
+        this.rate = rate;
     }
 
     public String getPetId() {

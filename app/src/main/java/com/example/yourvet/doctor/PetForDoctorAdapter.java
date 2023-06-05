@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,8 +16,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.yourvet.R;
-import com.example.yourvet.model.Patient;
 import com.example.yourvet.model.Pet;
+import com.example.yourvet.model.User;
 import com.example.yourvet.patient.PetProfileFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PetForDoctorAdapter extends BaseAdapter {
     private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
@@ -76,7 +74,7 @@ public class PetForDoctorAdapter extends BaseAdapter {
         databaseReference.child("users").child("patients").child(list.get(i).getOwnerId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Patient p=snapshot.getValue(Patient.class);
+                User p=snapshot.getValue(User.class);
                 owner_name.setText(p.getFirstname()+" "+p.getLastname());
             }
 
@@ -92,8 +90,14 @@ public class PetForDoctorAdapter extends BaseAdapter {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("petId", list.get(i).getId());
                 editor.apply();
+                SharedPreferences sharedPref1 = context.getSharedPreferences("de_unde_vine", MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = sharedPref1.edit();
+                editor1.putString("nume", this.toString());
+                editor1.apply();
+
                 FragmentActivity fragmentActivity=(FragmentActivity) context;
                 fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PetProfileFragment()).commit();
+
             }
         });
         return view;

@@ -76,6 +76,10 @@ public class PetAdapter extends BaseAdapter {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("petId", list.get(i).getId());
                 editor.apply();
+                SharedPreferences sharedPref1 = context.getSharedPreferences("de_unde_vine", MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = sharedPref1.edit();
+                editor1.putString("nume", this.toString());
+                editor1.apply();
                 FragmentActivity fragmentActivity=(FragmentActivity) context;
                 fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PetProfileFragment()).commit();
             }

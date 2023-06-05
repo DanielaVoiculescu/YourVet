@@ -48,11 +48,12 @@
                         tools:layout_editor_absoluteY="40dp"
                         tools:srcCompat="@tools:sample/avatars" />
 
-                    <!--<TextView
-                        android:id="@+id/textView"
+                    <TextView
+                        android:id="@+id/grade"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
                         android:text="TextView"
                         android:textColor="#ffffff"
                         android:textSize="20sp"
@@ -60,7 +61,7 @@
                         app:layout_constraintEnd_toEndOf="@+id/profile_image"
                         app:layout_constraintHorizontal_bias="0.488"
                         app:layout_constraintStart_toStartOf="@+id/profile_image"
-                        app:layout_constraintTop_toBottomOf="@+id/profile_image" />-->
+                        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
                     <!--<TextView
                         android:id="@+id/textView2"
@@ -72,12 +73,20 @@
                         app:layout_constraintEnd_toEndOf="@+id/textView"
                         app:layout_constraintStart_toStartOf="@+id/textView"
                         app:layout_constraintTop_toBottomOf="@+id/textView" />-->
-
+                    <Button
+                        android:id="@+id/back_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:drawableLeft="@drawable/ic_back"
+                        android:background="@android:color/transparent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="60dp"
+                        android:layout_marginTop="80dp"
                         android:layout_marginEnd="24dp"
                         android:background="@drawable/white_background"
                         android:elevation="3dp"
@@ -132,6 +141,7 @@
                                 android:textAlignment="viewEnd"
                                 android:textColor="#5B5B5B"
                                 android:textSize="18sp" />
+
 
                         </LinearLayout>
 
@@ -271,6 +281,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
                             android:background="#D9D9D9" />
+
+                        <Button
+                            android:id="@+id/work_time"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:text="Modifica program" />
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

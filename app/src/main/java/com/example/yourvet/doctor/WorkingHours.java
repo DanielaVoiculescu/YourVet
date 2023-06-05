@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -15,10 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.yourvet.R;
+import com.example.yourvet.model.TimeInterval;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,8 +32,11 @@ import java.util.Locale;
 public class WorkingHours extends Fragment {
     private EditText startTimeEditTextMonday, endTimeEditTextMonday,startTimeEditTextTuesday, endTimeEditTextTuesday,startTimeEditTextWednesday, endTimeEditTextWednesday,startTimeEditTextThursday, endTimeEditTextThursday,startTimeEditTextFriday, endTimeEditTextFriday;
 
-    private Calendar startCalendar, endCalendar;
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
+    private Calendar startCalendar, endCalendar;
+    private Button back_button;
     private SimpleDateFormat timeFormat;
     @Nullable
     @Override
@@ -45,10 +53,22 @@ public class WorkingHours extends Fragment {
         startTimeEditTextFriday=view.findViewById(R.id.start_time_friday);
         endTimeEditTextFriday=view.findViewById(R.id.end_time_edit_friday);
         timeFormat = new SimpleDateFormat("hh:mm a", Locale.US);
+        back_button = view.findViewById(R.id.back_button);
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Profile()).commit();
 
+            }
+        });
         startCalendar = Calendar.getInstance();
         endCalendar = Calendar.getInstance();
 
+        showIntervals("Monday");
+        showIntervals("Tuesday");
+        showIntervals("Wednesday");
+        showIntervals("Thursday");
+        showIntervals("Friday");
         startTimeEditTextMonday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +182,7 @@ public class WorkingHours extends Fragment {
                 workingHoursRef.child("Friday").child("start_time").setValue(startTimeFriday);
                 workingHoursRef.child("Friday").child("end_time").setValue(endTimeFriday);
                 // Show a toast to indicate that the working hours were saved
-                Toast.makeText(getContext(), "Working hours saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Program modificat cu succes!", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
@@ -183,5 +203,43 @@ public class WorkingHours extends Fragment {
                     }
                 }, hour, minute, false);
         timePickerDialog.show();
+    }
+    private void showIntervals(String day){
+        databaseReference.child("working_hours").child(auth.getCurrentUser().getUid()).child(day).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                TimeInterval timeInterval = snapshot.getValue(TimeInterval.class);
+                if (timeInterval !=null){
+                    switch (day){
+                        case "Monday":
+                            startTimeEditTextMonday.setText(timeInterval.getStart_time());
+                            endTimeEditTextMonday.setText(timeInterval.getEnd_time());
+                            break;
+                        case "Tuesday":
+                            startTimeEditTextTuesday.setText(timeInterval.getStart_time());
+                            endTimeEditTextTuesday.setText(timeInterval.getEnd_time());
+                            break;
+                        case "Wednesday":
+                            startTimeEditTextWednesday.setText(timeInterval.getStart_time());
+                            endTimeEditTextWednesday.setText(timeInterval.getEnd_time());
+                            break;
+                        case "Thursday":
+                            startTimeEditTextThursday.setText(timeInterval.getStart_time());
+                            endTimeEditTextThursday.setText(timeInterval.getEnd_time());
+                            break;
+                        case "Friday":
+                            startTimeEditTextFriday.setText(timeInterval.getStart_time());
+                            endTimeEditTextFriday.setText(timeInterval.getEnd_time());
+                            break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

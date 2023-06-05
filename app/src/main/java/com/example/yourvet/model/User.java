@@ -8,25 +8,26 @@ import java.io.Serializable;
 
 @Keep
 public class User implements Serializable {
-   private String  lastname;
+    private String  lastname;
     private String firstname;
-    private String username;
+
     private String email;
     private String password;
     private String phoneNr;
     private String photoUrl;
     private String id;
 
-    public User(String lastname, String firstname, String username, String email, String password, String phoneNr, String photoUrl,String id) {
+    public User(String lastname, String firstname, String email, String password, String phoneNr, String photoUrl,String id) {
         this.lastname = lastname;
         this.firstname = firstname;
-        this.username = username;
+
         this.email = email;
         this.password = password;
         this.phoneNr = phoneNr;
         this.photoUrl=photoUrl;
         this.id=id;
     }
+
 
 
     public String getPhotoUrl() {
@@ -58,14 +59,6 @@ public class User implements Serializable {
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {

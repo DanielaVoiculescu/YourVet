@@ -30,10 +30,8 @@ import androidx.fragment.app.Fragment;
 import com.example.yourvet.R;
 import com.example.yourvet.model.Breed;
 import com.example.yourvet.model.Date;
-import com.example.yourvet.model.Patient;
 import com.example.yourvet.model.Pet;
 import com.example.yourvet.model.Species;
-import com.example.yourvet.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -52,8 +50,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class AddPet extends Fragment {
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
 
     private AutoCompleteTextView autoCompleteTextViewBreed;
     private ArrayAdapter adapterItemBreed;
@@ -69,6 +67,7 @@ public class AddPet extends Fragment {
 
 
     private EditText pet_name;
+    AutoCompleteTextView date_of_birth;
 
     private String pet_species;
     private String pet_breed, pet_sex;
@@ -78,10 +77,10 @@ public class AddPet extends Fragment {
     private int year;
     private Button add_button, save_date, close_calendar, open_calendar;
     private TextView text;
-    private ArrayList<String> species = new ArrayList<>();
-    private ArrayList<String> breeds = new ArrayList<>();
+    private final ArrayList<String> species = new ArrayList<>();
+    private final ArrayList<String> breeds = new ArrayList<>();
     private ImageView imageView;
-    private StorageReference storageReference = FirebaseStorage.getInstance().getReference("petProfile");
+    private final StorageReference storageReference = FirebaseStorage.getInstance().getReference("petProfile");
     private Uri imgUri;
 
     @Nullable
@@ -105,7 +104,7 @@ public class AddPet extends Fragment {
         autoCompleteTextViewSex = view.findViewById(R.id.pet_sex);
         adapterItemSex = ArrayAdapter.createFromResource(getContext(), R.array.sex, R.layout.list_breed);
         imageView = view.findViewById(R.id.photo_pet);
-
+        date_of_birth = view.findViewById(R.id.date_of_birth);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,9 +141,9 @@ public class AddPet extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
-                            Breed species1 = dataSnapshot1.getValue(Breed.class);
-                            if (species1.getSpecies().equals(pet_species)) {
-                                breeds.add(species1.getName());
+                            Breed breed = dataSnapshot1.getValue(Breed.class);
+                            if (breed.getSpecies().equals(pet_species)) {
+                                breeds.add(breed.getName());
                                 adapterItemBreed.notifyDataSetChanged();
                             }
 
@@ -203,10 +202,10 @@ public class AddPet extends Fragment {
                         if (task.isSuccessful()) {
                             Uri downloadUri = task.getResult();
                             Date date = new Date(day, month, year);
-                            Pet pet = new Pet(uuid, pet_name.getText().toString(), mAuth.getCurrentUser().getUid(), pet_breed, pet_species, date,downloadUri.toString(),pet_sex);
+                            Pet pet = new Pet(uuid, pet_name.getText().toString(), mAuth.getCurrentUser().getUid(), pet_breed, pet_species, date, downloadUri.toString(), pet_sex);
                             databaseReference.child("pets").child(pet.getId()).setValue(pet);
                             Toast.makeText(getContext(), "Animalul a fost adaugat cu succes", Toast.LENGTH_SHORT).show();
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewPets()).commit();
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ViewPets()).commit();
 
 
                         } else {
@@ -240,6 +239,8 @@ public class AddPet extends Fragment {
                 day = i2;
                 month = i1;
                 year = i;
+                String date = i2 + "/" + i1 + "/" + i;
+                date_of_birth.setText(date);
             }
         });
         dialogBuilder.setView(calendarView);
@@ -252,7 +253,6 @@ public class AddPet extends Fragment {
                 @Override
                 public void onActivityResult(Uri uri) {
                     Picasso.get().load(uri).into(imageView);
-
                     imgUri = uri;
                 }
             });

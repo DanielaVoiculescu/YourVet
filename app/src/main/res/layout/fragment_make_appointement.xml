@@ -3,69 +3,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/ic_back"
+            android:background="@android:color/transparent"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
 
- <LinearLayout
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     android:orientation="vertical"
-     android:gravity="center"
-     android:layout_marginLeft="16dp"
-     android:layout_marginRight="16dp">
-     <com.google.android.material.textfield.TextInputLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:hint="Selecteaza interventia"
-         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-         <AutoCompleteTextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:id="@+id/interventions"/>
-     </com.google.android.material.textfield.TextInputLayout>
-     <TextView
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:textSize="20sp"
-         android:text="Selectati data"
-         android:textColor="@color/black"
-         android:layout_marginTop="20dp"
-        >
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Selecteaza interventia"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/interventions"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Selectati data"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                >
 
-     </TextView>
-     <CalendarView
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:id="@+id/date"
-         android:layout_marginTop="10dp">
+            </TextView>
+            <CalendarView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/date"
+                android:layout_marginTop="10dp">
 
-     </CalendarView>
-     <TextView
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:textSize="20sp"
-         android:textColor="@color/black"
-         android:text="Selectati intervalul orar"
-         android:layout_marginTop="20dp"/>
+            </CalendarView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="Selectati intervalul orar"
+                android:layout_marginTop="20dp"/>
 
-     <GridView
-         android:layout_marginTop="10dp"
-         android:id="@+id/grid_view"
-         android:layout_width="350dp"
-         android:layout_height="100dp"
-         android:columnWidth="20dip"
-         android:gravity="center"
-         android:horizontalSpacing="2dp"
-         android:verticalSpacing="2dp"
-         android:numColumns="5"
-         android:stretchMode="columnWidth" >
-     </GridView>
-     <androidx.appcompat.widget.AppCompatButton
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:id="@+id/do_appointement"
-         android:layout_marginTop="20dp"
-         android:text="Salveaza">
+            <GridView
+                android:layout_marginTop="10dp"
+                android:id="@+id/grid_view"
+                android:layout_width="350dp"
+                android:layout_height="100dp"
+                android:columnWidth="20dip"
+                android:gravity="center"
+                android:horizontalSpacing="2dp"
+                android:verticalSpacing="2dp"
+                android:numColumns="5"
+                android:stretchMode="columnWidth" >
+            </GridView>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/do_appointement"
+                android:background="@color/teal_700"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="Salveaza">
 
-     </androidx.appcompat.widget.AppCompatButton>
- </LinearLayout>
+            </androidx.appcompat.widget.AppCompatButton>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </ScrollView>

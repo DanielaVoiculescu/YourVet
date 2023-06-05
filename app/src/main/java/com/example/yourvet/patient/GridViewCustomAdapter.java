@@ -13,9 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.yourvet.R;
-import com.example.yourvet.model.Appointment;
-import com.example.yourvet.model.WorkDay;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -89,7 +89,7 @@ public class GridViewCustomAdapter extends BaseAdapter {
                     mSelectedPosition = position;
                     if (previousPosition != -1) {
                         View previousView = getViewByPosition(previousPosition, parent);
-                        previousView.setBackgroundColor(Color.GREEN);
+                        previousView.setBackgroundColor(ContextCompat.getColor(mActivity,R.color.purple_500));
                     }
                     view.setBackgroundColor(Color.WHITE);
                 } catch (ParseException e) {

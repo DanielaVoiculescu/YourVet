@@ -5,17 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.yourvet.admin.AdminMainPage;
+import com.example.yourvet.admin.MainPageAdmin;
 import com.example.yourvet.doctor.DoctorMainPage;
 import com.example.yourvet.R;
 import com.example.yourvet.patient.UserMainPage;
-import com.example.yourvet.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -33,6 +33,7 @@ public class Login extends AppCompatActivity {
     private EditText email, password;
     private Button loginButton;
     private TextView registerNowButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,47 +56,33 @@ public class Login extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-
-                                String userID=mAuth.getCurrentUser().getUid();
-                                FirebaseUser firebaseUser=mAuth.getCurrentUser();
-
-
-                                        databaseReference.child("roles").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                                databaseReference.child("roles").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                Log.d("id",mAuth.getCurrentUser().getUid());
                                                 if(snapshot.getValue(String.class).equals("doctor")){
                                                     startActivity(new Intent(Login.this, DoctorMainPage.class));
-                                                    finish();
-                                                }
+                                                    finish(); }
                                                 else
                                                 if (snapshot.getValue(String.class).equals("patient")){
                                                     startActivity(new Intent(Login.this, UserMainPage.class));
                                                     finish();
                                                 }
                                                 else
-                                                {
-                                                    startActivity(new Intent(Login.this, AdminMainPage.class));
-                                                    finish();
+                                                if (snapshot.getValue(String.class).equals("unconfirmed_doctor")){
+                                                    Toast.makeText(Login.this, "Contul nu este inca confirmat!", Toast.LENGTH_SHORT).show();
+                                                    mAuth.signOut();
                                                 }
-                                            }
-
+                                                else {
+                                                    startActivity(new Intent(Login.this, MainPageAdmin.class));
+                                                    finish(); } }
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError error) {
-
-                                            }
-                                        });
-
-
-
-
+                                            }});
                             }
                             else{
                                 Toast.makeText(Login.this,"Email sau parola incorecte",Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-                    });
-
+                            } }});
                 }
             }
         });

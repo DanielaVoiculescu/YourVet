@@ -15,12 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.yourvet.Message.PrivateChat;
 import com.example.yourvet.R;
 import com.example.yourvet.doctor.AddIntervention;
 import com.example.yourvet.doctor.MedicalHistory;
-import com.example.yourvet.model.Patient;
+import com.example.yourvet.doctor.ViewAllPets;
 import com.example.yourvet.model.Pet;
+import com.example.yourvet.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +34,7 @@ public class PetProfileFragment extends Fragment {
     private ImageView imageView;
     private TextView name,species,breed,birthdate, owner_name,sex;
     private String petId;
-    private Button medical_history, add_intervention, edit_button;
+    private Button medical_history, add_intervention,back_button;
     private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
     private FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
     @Nullable
@@ -43,6 +43,9 @@ public class PetProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_pet_profile, container, false);
         SharedPreferences sharedPreferences =getContext().getSharedPreferences("pet", MODE_PRIVATE);
         petId = sharedPreferences.getString("petId","");
+        SharedPreferences sharedPreferences1 =getContext().getSharedPreferences("de_unde_vine", MODE_PRIVATE);
+        String clasa= sharedPreferences1.getString("nume","");
+
         imageView= view.findViewById(R.id.profile_image);
         name=view.findViewById(R.id.profile_name_pet);
         species=view.findViewById(R.id.profile_species);
@@ -52,7 +55,22 @@ public class PetProfileFragment extends Fragment {
         sex=view.findViewById(R.id.sex_pet);
         medical_history=view.findViewById(R.id.medical_history);
         add_intervention=view.findViewById(R.id.add_intervention);
-        edit_button=view.findViewById(R.id.edit_button);
+        back_button=view.findViewById(R.id.back_button);
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(clasa.contains("PetForDoctorAdapter")){
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewAllPets()).commit();
+
+                }
+                else
+                {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ViewPets()).commit();
+
+                }
+            }
+        });
+        //edit_button=view.findViewById(R.id.edit_button);
         databaseReference.child("roles").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -61,7 +79,7 @@ public class PetProfileFragment extends Fragment {
                     add_intervention.setVisibility(View.INVISIBLE);
                 }
                 if (role.equals("doctor")){
-                    edit_button.setVisibility(View.INVISIBLE);
+                  //  edit_button.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -84,7 +102,7 @@ public class PetProfileFragment extends Fragment {
                 databaseReference.child("users").child("patients").child(pet.getOwnerId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Patient p=snapshot.getValue(Patient.class);
+                        User p=snapshot.getValue(User.class);
                         owner_name.setText(p.getFirstname()+" "+p.getLastname());
                     }
 
@@ -101,12 +119,7 @@ public class PetProfileFragment extends Fragment {
 
             }
         });
-        edit_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
         add_intervention.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

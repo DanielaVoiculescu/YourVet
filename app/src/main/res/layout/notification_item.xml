@@ -1,41 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/notification" />
 
         <TextView
-            android:id="@+id/notification_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Titlu"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:id="@+id/notification_text"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toRightOf="@+id/imageView"
+
+            android:gravity="start|top"
+            android:lines="5"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/notification_time"
+            android:id="@+id/notification_time_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Data"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Mar 24, 2019"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_below="@+id/notification_text"
+            />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/seen_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/ic_view"
-        android:drawablePadding="8dp"
-        android:padding="8dp"
-        android:text="Vizualizare"
-        android:textSize="16sp" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text=" at "
+            android:layout_below="@+id/notification_text"
+            android:layout_toRightOf="@+id/notification_time_day" />
+
+        <TextView
+            android:id="@+id/notification_time_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/notification_text"
+            android:text="09:20 PM"
+            android:layout_toRightOf="@+id/textView2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="25dp"
+            android:id="@+id/button"
+            android:layout_toEndOf="@+id/notification_text"
+            android:text="Nota"
+            app:layout_constraintEnd_toStartOf="@+id/notification_time_day"
+            app:layout_constraintTop_toTopOf="@+id/notification_text"
+            />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

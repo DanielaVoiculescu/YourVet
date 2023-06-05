@@ -4,6 +4,6 @@
     android:layout_width="100dip"
     android:layout_height="80dip"
     android:textSize="10sp"
-    android:background="@color/green"
+    android:background="@color/purple_500"
     android:textColor="@android:color/black"
     android:textStyle="bold" />
