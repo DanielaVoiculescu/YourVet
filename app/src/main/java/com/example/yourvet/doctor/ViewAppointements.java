@@ -3,6 +3,7 @@ package com.example.yourvet.doctor;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ import java.util.List;
 public class ViewAppointements extends Fragment {
     private CalendarView calendarView;
     private AppointmentAdapter appointmentAdapter;
-    private ListView appointmentsList;
+    private RecyclerView appointmentsList;
     private ArrayList<Appointment> appointments=new ArrayList<>();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
     private FirebaseAuth mAuth=FirebaseAuth.getInstance();
@@ -58,7 +59,18 @@ public class ViewAppointements extends Fragment {
         Calendar calendar = Calendar.getInstance();
         long currentDate = calendar.getTimeInMillis();
         calendarView.setMinDate(currentDate);
+        appointmentsList.setHasFixedSize(true);
+        appointmentsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.top = 8;
+                outRect.bottom = 8;
+            }
+        };
+
+        appointmentsList.addItemDecoration(itemDecoration);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {

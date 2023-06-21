@@ -42,7 +42,6 @@ public class Profile extends Fragment {
     private Button appointment_button,message_button,work_time;
     private String value;
     private Button back_button;
-    private TextView grade;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,7 +65,7 @@ public class Profile extends Fragment {
         description=view.findViewById(R.id.doctor_description);
         appointment_button=view.findViewById(R.id.do_appointement);
         message_button=view.findViewById(R.id.message_button);
-        grade=view.findViewById(R.id.grade);
+
         message_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +81,7 @@ public class Profile extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.getValue(String.class).equals("doctor")){
                     back_button.setVisibility(View.INVISIBLE);
-                    grade.setVisibility(View.GONE);
+
                     message_button.setVisibility(View.INVISIBLE);
                     appointment_button.setVisibility(View.INVISIBLE);
                     databaseReference.child("users").child("doctors").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,29 +108,7 @@ public class Profile extends Fragment {
                     work_time.setVisibility(View.INVISIBLE);
                     SharedPreferences sharedPreferences =getContext().getSharedPreferences("myKey", MODE_PRIVATE);
                      value = sharedPreferences.getString("doctorId","");
-                    databaseReference.child("interventions").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            float doctorRate=0;
-                            int number=0;
-                            for( DataSnapshot d: snapshot.getChildren()){
-                                Intervention inte=d.getValue(Intervention.class);
-                                if (inte.getDoctorId().equals(value)){
-                                    if (inte.getRate()!=0){
-                                        doctorRate+=inte.getRate();
-                                        number++;
-                                    }
-                                }
 
-                            }
-                            grade.setText("Nota:\n"+doctorRate/number+"/5");
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
                     databaseReference.child("users").child("doctors").child(value).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {

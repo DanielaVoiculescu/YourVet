@@ -53,12 +53,9 @@ public class ChatsFragment extends Fragment {
                     }
                     if(m.getReciverId().equals(mAuth.getCurrentUser().getUid())){
                         usersList.add(m.getSenderId());
-                        
                     }
                 }
                 readChats();
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -67,39 +64,53 @@ public class ChatsFragment extends Fragment {
         });
         return view;
     }
-    private  void readChats(){
-        userList=new ArrayList<>();
-        userAdapter=new UserAdapter(getContext(),userList);
+    private void readChats() {
+        userList = new ArrayList<>();
+        userAdapter = new UserAdapter(getContext(), userList);
         recyclerView.setAdapter(userAdapter);
+
         databaseReference.child("roles").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String path;
-                if (snapshot.getValue(String.class).equals("doctor")){
-                    path="patients";
+                if (snapshot.getValue(String.class).equals("doctor")) {
+                    path = "patients";
+                } else {
+                    path = "doctors";
                 }
-                else
-                    path="doctors";
+
                 databaseReference.child("users").child(path).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot snapshot1: snapshot.getChildren()){
-                            User u= snapshot1.getValue(User.class);
-                            for(String id:usersList){
-                                if(u.getId().equals(id)){
-                                    if(userList.size()!=0){
-                                        for (User user1:userList){
-                                            if(!u.getId().equals(user1.getId())){
-                                                userList.add(u);
-                                                userAdapter.notifyDataSetChanged();
-                                            } } }
-                                    else{
-                                        userList.add(u);
-                                        userAdapter.notifyDataSetChanged();
-                                    } } } } }
+                        List<User> usersToAdd = new ArrayList<>(); // Create a separate list
+
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            User u = snapshot1.getValue(User.class);
+                            for (String id : usersList) {
+                                if (u.getId().equals(id)) {
+                                    // Add user to the separate list
+                                    usersToAdd.add(u);
+                                    break; // Break the loop after finding a match
+                                }
+                            }
+                        }
+
+                        // Add the users from the separate list to userList
+                        userList.addAll(usersToAdd);
+                        userAdapter.notifyDataSetChanged();
+                    }
+
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) { }}); }
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle onCancelled
+                    }
+                });
+            }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }});
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle onCancelled
+            }
+        });
     }
 }

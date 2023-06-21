@@ -117,6 +117,7 @@ public class AddPet extends Fragment {
         databaseReference.child("species").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                species.clear();
                 for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
                     Species species1 = dataSnapshot1.getValue(Species.class);
                     species.add(species1.getName());
@@ -140,20 +141,18 @@ public class AddPet extends Fragment {
                 databaseReference.child("breeds").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        breeds.clear();
                         for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
                             Breed breed = dataSnapshot1.getValue(Breed.class);
                             if (breed.getSpecies().equals(pet_species)) {
                                 breeds.add(breed.getName());
                                 adapterItemBreed.notifyDataSetChanged();
                             }
-
-
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
                 adapterItemBreed = new ArrayAdapter(getContext(), R.layout.list_breed, breeds);
@@ -231,8 +230,6 @@ public class AddPet extends Fragment {
         dialogBuilder = new AlertDialog.Builder(getContext());
         final View calendarView = getLayoutInflater().inflate(R.layout.calendar, null);
         birthdateC = (CalendarView) calendarView.findViewById(R.id.calendar_birthdate);
-
-
         birthdateC.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {

@@ -3,7 +3,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:layout_margin="8dp"
     android:backgroundTint="@color/white"
     android:elevation="4dp"
     android:id="@+id/choose_pet"
@@ -12,16 +12,15 @@
     <LinearLayout
 
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="8dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:background="@drawable/layout_shape"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/pet_photo"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
-             />
+            android:layout_height="match_parent" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -46,35 +45,25 @@
                 android:textSize="18sp"
                 android:textStyle="italic" />
 
-            <LinearLayout
+
+            <TextView
+                android:id="@+id/rasa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="Rasa"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/rasa"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rasa"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" | "
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+            <TextView
+                android:id="@+id/sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Sexul"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/sex"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sexul"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
 
         </LinearLayout>
 

@@ -114,7 +114,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Doctor d= snapshot.getValue(Doctor.class);
                         d.setSpecialization(specializationName);
-
+                        d.setDescription("Fara descriere");
                         databaseReference.child("requests").child(request.getUserId()).removeValue();
                         databaseReference.child("users").child("doctors").child(request.getUserId()).setValue(d);
                         databaseReference.child("users").child("patients").child(request.getUserId()).removeValue();

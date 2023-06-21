@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourvet.R;
 import com.example.yourvet.model.Appointment;
@@ -21,57 +22,76 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class AppointmentAdapter extends BaseAdapter {
+public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<Appointment> appointments=new ArrayList<>();
-    private TextView appointment_owner,appointment_type,appointment_time;
-    DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
+    private ArrayList<Appointment> appointments = new ArrayList<>();
+    private HashMap<String, String> ownersMap = new HashMap<>();
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
 
     public AppointmentAdapter(Context context, ArrayList<Appointment> appointments) {
         this.context = context;
         this.appointments = appointments;
+        fetchOwnersData();
     }
 
-    @Override
-    public int getCount() {
-        return appointments.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return appointments.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        LayoutInflater inflater=(LayoutInflater)  context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view=inflater.inflate(R.layout.appointment_info,viewGroup,false);
-        appointment_owner=view.findViewById(R.id.appointment_owner);
-        appointment_type=view.findViewById(R.id.appointment_type);
-        appointment_time=view.findViewById(R.id.appointment_time);
-        String id=appointments.get(i).getOwner_id();
-        appointment_type.setText(appointments.get(i).getIntervention());
-        appointment_time.setText(appointments.get(i).getWorkDay().getStart_time()+"-"+appointments.get(i).getWorkDay().getEnd_time());
-        databaseReference.child("users").child("patients").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void fetchOwnersData() {
+        DatabaseReference ownersRef = databaseReference.child("users").child("patients");
+        ownersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User p=snapshot.getValue(User.class);
-                appointment_owner.setText(p.getFirstname()+" "+p.getLastname());
-
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    User owner = dataSnapshot.getValue(User.class);
+                    if (owner != null) {
+                        ownersMap.put(dataSnapshot.getKey(), owner.getFirstname() + " " + owner.getLastname());
+                    }
+                }
+                notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle onCancelled
             }
         });
+    }
 
-        return view;
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointment_info, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Appointment appointment = appointments.get(position);
+        holder.appointment_type.setText(appointment.getIntervention());
+        holder.appointment_time.setText(appointment.getWorkDay().getStart_time() + "-" + appointment.getWorkDay().getEnd_time());
+
+        String ownerId = appointment.getOwner_id();
+        String ownerName = ownersMap.get(ownerId);
+        if (ownerName != null) {
+            holder.appointment_owner.setText(ownerName);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return appointments.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView appointment_owner;
+        TextView appointment_type;
+        TextView appointment_time;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            appointment_owner = itemView.findViewById(R.id.appointment_owner);
+            appointment_type = itemView.findViewById(R.id.appointment_type);
+            appointment_time = itemView.findViewById(R.id.appointment_time);
+        }
     }
 }

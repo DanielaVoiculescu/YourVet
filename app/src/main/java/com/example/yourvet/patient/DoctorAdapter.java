@@ -26,6 +26,7 @@ import com.example.yourvet.doctor.Profile;
 import com.example.yourvet.model.Doctor;
 import com.example.yourvet.model.Intervention;
 import com.example.yourvet.model.Pet;
+import com.example.yourvet.model.User;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,16 +44,18 @@ public class DoctorAdapter extends BaseAdapter implements Filterable {
     private ArrayList<Doctor> list = new ArrayList<Doctor>();
     private final Context context;
     private ImageView imageView;
-    private TextView name, specialization, description;
+    private TextView name, specialization, description,gradeText;
     private MaterialCardView linearLayout;
     private ArrayList<Doctor> filteredList = new ArrayList<>();
+    private HashMap<String,ArrayList<Float>> interventionsMap = new HashMap<String,ArrayList<Float>>();
     private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
-    private String grades;
+
 
     public DoctorAdapter(ArrayList<Doctor> list, Context context) {
         this.list = list;
         this.context = context;
         this.filteredList = list;
+        fetchGradesData();
     }
 
     @Override
@@ -76,7 +80,7 @@ public class DoctorAdapter extends BaseAdapter implements Filterable {
         imageView = view.findViewById(R.id.doctor_photo);
         name = view.findViewById(R.id.name_doctor);
         specialization = view.findViewById(R.id.specialization);
-
+        gradeText= view.findViewById(R.id.grade);
         description = view.findViewById(R.id.description);
         linearLayout = view.findViewById(R.id.choose_doctor);
         linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +98,20 @@ public class DoctorAdapter extends BaseAdapter implements Filterable {
             }
         });
 
+        ArrayList<Float> rates=interventionsMap.get(filteredList.get(i).getId());
+
+        if (rates != null && rates.size() > 0) {
+            float sum = 0, grade;
+            int size = rates.size();
+            for (Float f : rates) {
+                sum = sum + f;
+            }
+            grade = sum / size;
+            gradeText.setText(Float.toString(grade));
+        } else {
+            gradeText.setText(""); // Set an appropriate default value if there are no rates.
+        }
+
 
         name.setText(filteredList.get(i).getLastname() + " " + filteredList.get(i).getFirstname());
         specialization.setText(filteredList.get(i).getSpecialization());
@@ -103,33 +121,30 @@ public class DoctorAdapter extends BaseAdapter implements Filterable {
         return view;
     }
 
-    private String getGrade(String id) {
-        databaseReference.child("interventions").addValueEventListener(new ValueEventListener() {
+    private void fetchGradesData() {
+        DatabaseReference ownersRef = databaseReference.child("interventions");
+        ownersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                float doctorRate = 0;
-                int number = 0;
-                for (DataSnapshot d : snapshot.getChildren()) {
-                    Intervention inte = d.getValue(Intervention.class);
-                    if (inte.getDoctorId().equals(id)) {
-                        if (inte.getRate() != 0) {
-                            Log.d("inter_", "" + inte.getRate());
-                            doctorRate += inte.getRate();
-                            number++;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Intervention owner = dataSnapshot.getValue(Intervention.class);
+                    if (owner.getRate() != 0) {
+                        ArrayList<Float> rates = interventionsMap.get(owner.getDoctorId());
+                        if (rates == null) {
+                            rates = new ArrayList<>();
+                            interventionsMap.put(owner.getDoctorId(), rates);
                         }
+                        rates.add(owner.getRate());
                     }
-
                 }
-                grades = doctorRate / number + "/5";
+                notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle onCancelled
             }
         });
-
-        return grades;
     }
 
     @Override

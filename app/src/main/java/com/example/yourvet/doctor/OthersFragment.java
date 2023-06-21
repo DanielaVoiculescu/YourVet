@@ -1,6 +1,7 @@
 package com.example.yourvet.doctor;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class OthersFragment extends Fragment {
                 for(DataSnapshot d:snapshot.getChildren()){
                     Pet p=d.getValue(Pet.class);
                     if (!p.getSpecies().equals("Pisica") && !p.getSpecies().equals("Caine")){
+                        Log.d("pet",p.getName());
                         others.add(p);
                         otherAdapter.notifyDataSetChanged();
                     }

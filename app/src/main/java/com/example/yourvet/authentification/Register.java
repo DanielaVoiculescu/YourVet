@@ -53,8 +53,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Register extends AppCompatActivity {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://yourvet-fdaf2-default-rtdb.firebaseio.com/");
-    FirebaseAuth mAuth=FirebaseAuth.getInstance();
-    StorageReference storageReference= FirebaseStorage.getInstance().getReference("userProfile");
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference("userProfile");
     EditText lastname;
     String lastnameText;
     EditText firstname;
@@ -67,7 +67,7 @@ public class Register extends AppCompatActivity {
     EditText password;
     EditText conf_password;
     Button registerButton;
-    TextView loginView,password_error;
+    TextView loginView, password_error;
     RadioGroup radioGroup;
     String passwordText;
     String conf_passwordText;
@@ -78,13 +78,14 @@ public class Register extends AppCompatActivity {
     String doctorIdText;
     CircleImageView imgGallery;
     Uri imgUri;
-    public static final int PICK_IMAGE_REQUEST=1;
+    public static final int PICK_IMAGE_REQUEST = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         lastname = findViewById(R.id.lastname);
-        firstname= findViewById(R.id.firstname);
+        firstname = findViewById(R.id.firstname);
         email = findViewById(R.id.mail);
         phone = findViewById(R.id.phone);
         password = findViewById(R.id.password);
@@ -92,19 +93,19 @@ public class Register extends AppCompatActivity {
         registerButton = findViewById(R.id.registerButton);
         loginView = findViewById(R.id.loginNow);
         radioGroup = findViewById(R.id.radio_group);
-        doctorID=findViewById(R.id.doctor_id);
+        doctorID = findViewById(R.id.doctor_id);
         doctorID.setVisibility(View.INVISIBLE);
-        radioButtonDoctor=findViewById(R.id.doctor);
-        radioButtonUser=findViewById(R.id.simple_user);
-        imgGallery=findViewById(R.id.imgGallery);
-        password_error=findViewById(R.id.password_error);
-        doctorId=findViewById(R.id.doctor_id_label);
+        radioButtonDoctor = findViewById(R.id.doctor);
+        radioButtonUser = findViewById(R.id.simple_user);
+        imgGallery = findViewById(R.id.imgGallery);
+        password_error = findViewById(R.id.password_error);
+        doctorId = findViewById(R.id.doctor_id_label);
         doctorId.setVisibility(View.GONE);
 
         imgGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent iGallery=new Intent(Intent.ACTION_PICK);
+                Intent iGallery = new Intent(Intent.ACTION_PICK);
                 iGallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 mGetContent.launch("image/*");
             }
@@ -119,7 +120,7 @@ public class Register extends AppCompatActivity {
                 passwordText = password.getText().toString();
                 conf_passwordText = conf_password.getText().toString();
 
-                doctorIdText=doctorID.getText().toString();
+                doctorIdText = doctorID.getText().toString();
                 final String role;
                 if (lastnameText.isEmpty()
                         || firstnameText.isEmpty()
@@ -140,42 +141,51 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Email invalid", Toast.LENGTH_SHORT).show();
                 } else if (!Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?])[A-Za-z\\d#$@!%&*?]{6,}$", passwordText)) {
                     password_error.setVisibility(View.VISIBLE);
-                    Toast.makeText(Register.this, "Parola invalida", Toast.LENGTH_SHORT).show(); }
-                else {
+                    Toast.makeText(Register.this, "Parola invalida", Toast.LENGTH_SHORT).show();
+                } else {
 
-                    mAuth.createUserWithEmailAndPassword(emailText,passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    mAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
 
-                                if(!doctorIdText.isEmpty()){
-                                    Request r=new Request(lastnameText,firstnameText,doctorIdText,mAuth.getCurrentUser().getUid());
-                                    databaseReference.child("requests").child(mAuth.getCurrentUser().getUid()).setValue(r); }
-                                StorageReference fileReference= storageReference.child(mAuth.getCurrentUser().getUid()+"."+getFileExtension(imgUri));
-                                UploadTask uploadTask= fileReference.putFile(imgUri);
+                                if (!doctorIdText.isEmpty()) {
+                                    Request r = new Request(lastnameText, firstnameText, doctorIdText, mAuth.getCurrentUser().getUid());
+                                    databaseReference.child("requests").child(mAuth.getCurrentUser().getUid()).setValue(r);
+                                }
+                                StorageReference fileReference = storageReference.child(mAuth.getCurrentUser().getUid() + "." + getFileExtension(imgUri));
+                                UploadTask uploadTask = fileReference.putFile(imgUri);
                                 Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                                     @Override
                                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                                         if (!task.isSuccessful()) {
-                                            throw task.getException(); }
-                                        return fileReference.getDownloadUrl(); }
+                                            throw task.getException();
+                                        }
+                                        return fileReference.getDownloadUrl();
+                                    }
                                 }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Uri> task) {
                                         if (task.isSuccessful()) {
                                             User user;
                                             Uri downloadUri = task.getResult();
-                                            if(!doctorIdText.isEmpty()){
-                                                user= new User(lastnameText,firstnameText,emailText,passwordText,phoneText,downloadUri.toString(),mAuth.getCurrentUser().getUid());
+                                            if (!doctorIdText.isEmpty()) {
+                                                user = new User(lastnameText, firstnameText, emailText, passwordText, phoneText, downloadUri.toString(), mAuth.getCurrentUser().getUid());
                                                 databaseReference.child("roles").child(mAuth.getCurrentUser().getUid()).setValue("unconfirmed_doctor");
-                                                databaseReference.child("users").child("patients").child(mAuth.getCurrentUser().getUid()).setValue(user); }
-                                            else{
-                                                user= new User(lastnameText,firstnameText,emailText,passwordText,phoneText,downloadUri.toString(),mAuth.getCurrentUser().getUid());
+                                                databaseReference.child("users").child("patients").child(mAuth.getCurrentUser().getUid()).setValue(user);
+                                            } else {
+                                                user = new User(lastnameText, firstnameText, emailText, passwordText, phoneText, downloadUri.toString(), mAuth.getCurrentUser().getUid());
                                                 databaseReference.child("roles").child(mAuth.getCurrentUser().getUid()).setValue("patient");
-                                                databaseReference.child("users").child("patients").child(mAuth.getCurrentUser().getUid()).setValue(user); } }
-                                        else { } }});
-                                Toast.makeText(Register.this, "Utilizator creat cu succes!", Toast.LENGTH_SHORT).show(); } }});
-
+                                                databaseReference.child("users").child("patients").child(mAuth.getCurrentUser().getUid()).setValue(user);
+                                            }
+                                        } else {
+                                        }
+                                    }
+                                });
+                                Toast.makeText(Register.this, "Utilizator creat cu succes!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -187,10 +197,10 @@ public class Register extends AppCompatActivity {
                 finish();
             }
         });
-        radioButtonDoctor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()  {
+        radioButtonDoctor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     doctorId.setVisibility(View.VISIBLE);
                     doctorID.setVisibility(View.VISIBLE);
                     radioButtonUser.setChecked(false);
@@ -200,7 +210,7 @@ public class Register extends AppCompatActivity {
         radioButtonUser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     doctorId.setVisibility(View.GONE);
                     doctorID.setVisibility(View.VISIBLE);
                     radioButtonDoctor.setChecked(false);
@@ -210,15 +220,16 @@ public class Register extends AppCompatActivity {
 
 
     }
+
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
         @Override
         public void onActivityResult(Uri uri) {
 
             imgUri = uri;
 
-            Log.d("orie",""+getRotationAngle(uri));
+            Log.d("orie", "" + getRotationAngle(uri));
 
-            Bitmap rotatedBitmap = rotateBitmapFromUri(Register.this,uri, getRotationAngle(uri));
+            Bitmap rotatedBitmap = rotateBitmapFromUri(Register.this, uri, getRotationAngle(uri));
             if (rotatedBitmap != null) {
                 // Afișați imaginea rotită în ImageView
                 imgGallery.setImageBitmap(rotatedBitmap);
@@ -229,6 +240,7 @@ public class Register extends AppCompatActivity {
 
         }
     });
+
     public static Bitmap rotateBitmapFromUri(Context context, Uri imageUri, float degrees) {
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
@@ -256,13 +268,13 @@ public class Register extends AppCompatActivity {
                         ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
                 switch (orientation) {
                     case ExifInterface.ORIENTATION_ROTATE_90:
-                        orientation1=90;
+                        orientation1 = 90;
                         break;
                     case ExifInterface.ORIENTATION_ROTATE_180:
-                        orientation1=180;
+                        orientation1 = 180;
                         break;
                     case ExifInterface.ORIENTATION_ROTATE_270:
-                        orientation1=270;
+                        orientation1 = 270;
                         break;
 
                 }
@@ -280,11 +292,13 @@ public class Register extends AppCompatActivity {
         }
         return orientation1;
     }
-    private String getFileExtension(Uri uri){
-        ContentResolver cR=getContentResolver();
-        MimeTypeMap mime=MimeTypeMap.getSingleton();
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
+
     private String getRealPathFromURI(Uri uri) {
         String realPath = null;
         if (uri.getScheme().equals("content")) {

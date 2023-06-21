@@ -125,6 +125,21 @@ public class DoctorMainPage extends AppCompatActivity  implements NavigationView
         if(savedInstanceState==null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentMainPage()).commit();
         }
+        databaseReference.child("users").child("doctors").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Doctor doctor= snapshot.getValue(Doctor.class);
+                if (doctor.getDescription().equals("Fara descriere")){
+                    DoctorSetUpDialog doctorSetUpDialog=new DoctorSetUpDialog(DoctorMainPage.this);
+                    doctorSetUpDialog.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
     @Override
     public void onBackPressed(){
